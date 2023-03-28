@@ -30,7 +30,7 @@ export async function deleteBudget(
   return db('budgets').where({ id }).del()
 }
 
-export async function updateBudgets(
+export async function updateBudget(
   id: number,
   newBudgetDetail: Partial<Budget>,
   db = connection
@@ -38,7 +38,6 @@ export async function updateBudgets(
   await db('budgets').where({ id }).update({
     name: newBudgetDetail.name,
     amount: newBudgetDetail.amount,
-    date: newBudgetDetail.date,
   })
   return db('budgets').where({ id }).select().first()
 }
@@ -51,14 +50,13 @@ export async function getAllExpenses(
 }
 
 export async function getAllExpensesByCategory(
-  userId: number,
   budgetId: number,
   db = connection
 ): Promise<Expenses[]> {
-  return db('expenses').where({ budget_id: budgetId, user_id: userId }).select()
+  return db('expenses').where({ budget_id: budgetId }).select()
 }
 
-export async function updateExpenses(
+export async function updateExpense(
   id: number,
   newExpenseDetails: Partial<Expenses>,
   db = connection
@@ -67,8 +65,9 @@ export async function updateExpenses(
     category: newExpenseDetails.category,
     amount: newExpenseDetails.amount,
     date: newExpenseDetails.date,
+    budget_id: newExpenseDetails.budget_id,
   })
-  return db('budget').where({ id }).select().first()
+  return db('expenses').where({ id }).select().first()
 }
 
 export async function deleteExpenses(
@@ -91,4 +90,21 @@ export async function addExpenses(
     date: newExpense.date,
     budget_id: budgetId,
   })
+}
+
+export async function getBudgetById(id: number, db = connection) {
+  return db('budgets').where({ id }).select().first()
+}
+export async function getExpenseById(id: number, db = connection) {
+  return db('expenses').where({ id }).select().first()
+}
+export async function getTotalExpensesByBudgetId(
+  budgetId: number,
+  db = connection
+): Promise<number> {
+  const result = await db('expenses')
+    .where({ budget_id: budgetId })
+    .sum('amount as totalAmount')
+    .first()
+  return result?.totalAmount || 0
 }

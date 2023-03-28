@@ -9,7 +9,7 @@ exports.up = function (knex) {
     table.string('password').notNullable()
     table.string('first_name').notNullable()
     table.string('last_name').notNullable()
-    table.timestamps(false, true)
+    
   })
 }
 

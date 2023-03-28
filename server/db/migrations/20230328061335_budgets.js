@@ -15,7 +15,7 @@ exports.up = function (knex) {
       .onDelete('CASCADE')
       .notNullable()
     table.date('date').notNullable()
-    table.timestamps(false, true)
+    
   })
 }
 

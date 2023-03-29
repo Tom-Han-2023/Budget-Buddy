@@ -12,18 +12,14 @@ import {
 
 const router = express.Router()
 const userId = 1
-const timestamp = Date.now()
-const date = new Date(timestamp)
-
-const year = date.getFullYear()
-const month = String(date.getMonth() + 1).padStart(2, '0')
-const day = String(date.getDate()).padStart(2, '0')
-
-const formattedDate = `${year}-${month}-${day}`
+interface Query {
+  userId: string
+}
 
 // /api/v1/budgets'
 router.get('/', async (req, res) => {
   try {
+    const { userId } = req.query as Query
     const budgets = await getAllBudgets(userId)
     res.json(budgets)
   } catch (error) {
@@ -37,8 +33,8 @@ router.get('/', async (req, res) => {
 // /api/v1/budgets'
 router.post('/', async (req, res) => {
   try {
-    const newBudget = { ...req.body, date: formattedDate }
-    const updatedlist = await addBudgets(userId, newBudget)
+    const newBudget = { ...req.body }
+    const updatedlist = await addBudgets(newBudget)
     res.json(updatedlist)
   } catch (error) {
     console.log(error)
@@ -67,7 +63,7 @@ router.get('/:budgetId', async (req, res) => {
 router.patch('/:id', async (req, res) => {
   try {
     const budgetId = parseInt(req.params.id)
-    const newBudgetDetail = { ...req.body }
+    const newBudgetDetail = { ...req.body }    
     const updatedBudget = await updateBudget(budgetId, newBudgetDetail)
     res.json(updatedBudget)
   } catch (error) {
@@ -82,8 +78,9 @@ router.patch('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const budgetId = parseInt(req.params.id)
-    await deleteBudget(budgetId)
-    res.status(200).json('OK')
+    const { userId } = req.query as unknown as Query
+    const updatedBudgetList = await deleteBudget(budgetId, userId)
+    res.json(updatedBudgetList)
   } catch (error) {
     console.log(error)
     res.status(500).json({

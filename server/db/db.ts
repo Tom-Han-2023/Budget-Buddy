@@ -3,43 +3,44 @@ import { Expenses } from '../../Models/expenses'
 import connection from './connection'
 
 export function getAllBudgets(
-  userId: number,
+  userId: string,
   db = connection
 ): Promise<Budget[]> {
   return db('budgets').where({ user_id: userId }).select()
 }
 
 export async function addBudgets(
-  userId: number,
   newBudget: Partial<Budget>,
   db = connection
 ): Promise<Budget[]> {
   await db('budgets').insert({
-    user_id: userId,
+    user_id: newBudget.user_id,
     name: newBudget.name,
     amount: newBudget.amount,
     date: newBudget.date,
   })
-  return db('budgets').where({ user_id: userId }).select()
+  return db('budgets').where({ user_id: newBudget.user_id }).select()
 }
 
 export async function deleteBudget(
-  id: number,
+  budgetId: number,
+  userId: string,
   db = connection
-): Promise<number> {
-  return db('budgets').where({ id }).del()
+): Promise<Budget[]> {
+    await db('budgets').where({ id: budgetId }).del()
+  return db('budgets').where({ user_id: userId }).select()
 }
 
 export async function updateBudget(
   id: number,
   newBudgetDetail: Partial<Budget>,
   db = connection
-): Promise<Budget> {
+): Promise<Budget[]> {
   await db('budgets').where({ id }).update({
     name: newBudgetDetail.name,
     amount: newBudgetDetail.amount,
   })
-  return db('budgets').where({ id }).select().first()
+  return db('budgets').where({ user_id: newBudgetDetail.user_id }).select()
 }
 
 export async function getAllExpenses(

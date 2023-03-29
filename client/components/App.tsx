@@ -1,8 +1,22 @@
+import { IfAuthenticated, IfNotAuthenticated } from './Authenticated'
+import Budget from './Budget'
+import Home from './Home'
+
 function App() {
   return (
     <div>
-      <h1>App</h1>
-      <p>React development has begun!</p>
+      <header>
+        <h1>Budgeting App</h1>
+      </header>
+      <IfNotAuthenticated>
+        <Home />
+      </IfNotAuthenticated>
+      <IfAuthenticated>
+        <Budget />
+      </IfAuthenticated>
+      <footer>
+        <h2>Made by Tom Han</h2>
+      </footer>
     </div>
   )
 }

@@ -11,15 +11,16 @@ export function getAllBudgets(
 
 export async function addBudgets(
   newBudget: Partial<Budget>,
+  userId: string,
   db = connection
-): Promise<Budget[]> {
-  await db('budgets').insert({
-    user_id: newBudget.user_id,
+): Promise<number> {
+  return db('budgets').insert({
+    user_id: userId,
     name: newBudget.name,
     amount: newBudget.amount,
     date: newBudget.date,
   })
-  return db('budgets').where({ user_id: newBudget.user_id }).select()
+  
 }
 
 export async function deleteBudget(

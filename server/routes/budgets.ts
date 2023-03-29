@@ -1,4 +1,5 @@
 import express from 'express'
+import checkJwt, { JwtRequest } from '../auth0'
 import {
   addBudgets,
   addExpenses,
@@ -12,14 +13,17 @@ import {
 
 const router = express.Router()
 const userId = 1
-interface Query {
-  userId: string
-}
 
 // /api/v1/budgets'
-router.get('/', async (req, res) => {
+router.get('/', checkJwt, async (req: JwtRequest, res) => {
   try {
-    const { userId } = req.query as Query
+    const userId = req.auth?.sub
+    console.log(userId)
+    if (!userId) {
+      console.error('No userId')
+      return res.status(401).send('Unauthorized')
+    }
+
     const budgets = await getAllBudgets(userId)
     res.json(budgets)
   } catch (error) {
@@ -31,11 +35,16 @@ router.get('/', async (req, res) => {
 })
 
 // /api/v1/budgets'
-router.post('/', async (req, res) => {
+router.post('/', checkJwt, async (req: JwtRequest, res) => {
   try {
     const newBudget = { ...req.body }
-    const updatedlist = await addBudgets(newBudget)
-    res.json(updatedlist)
+    const userId = req.auth?.sub
+    if (!userId) {
+      console.error('No userId')
+      return res.status(401).send('Unauthorized')
+    }
+    await addBudgets(newBudget, userId)
+    res.json({ ...req.body, user_id: userId })
   } catch (error) {
     console.log(error)
     res.status(500).json({
@@ -63,7 +72,7 @@ router.get('/:budgetId', async (req, res) => {
 router.patch('/:id', async (req, res) => {
   try {
     const budgetId = parseInt(req.params.id)
-    const newBudgetDetail = { ...req.body }    
+    const newBudgetDetail = { ...req.body }
     const updatedBudget = await updateBudget(budgetId, newBudgetDetail)
     res.json(updatedBudget)
   } catch (error) {

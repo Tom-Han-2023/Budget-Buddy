@@ -1,6 +1,6 @@
 import { Budget } from '../../Models/budget'
 import {
-  ADD_BUDGETS,
+  ADD_BUDGET,
   BudgetAction,
   FAILURE_BUDGETS,
   RECEIVE_BUDGETS,
@@ -40,6 +40,12 @@ function budgetReducer(
       return {
         error: action.payload,
         data: [],
+        isLoading: false,
+      }
+      case ADD_BUDGET:
+      return {
+        error: null,
+        data: [...state.data, action.payload],
         isLoading: false,
       }
     default:

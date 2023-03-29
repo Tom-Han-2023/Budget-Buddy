@@ -2,7 +2,7 @@ import { join } from 'node:path'
 import express from 'express'
 import budgets from './routes/budgets'
 import spendings from './routes/spending'
-import checkJwt, { JwtRequest } from './auth0'
+
 
 const server = express()
 

@@ -4,7 +4,7 @@ import { useAppDispatch } from '../hooks'
 
 interface Prop {
   budgetid: number
-  userId: string
+  token: string
   budgetName: string
   budgetAmount: number
 }
@@ -19,7 +19,7 @@ function UpdatedBudget(props: Prop) {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    dispatch(updateBudget(props.budgetid,props.userId, budget))
+    dispatch(updateBudget(props.budgetid, props.token, budget))
     setClicked(false)
   }
 

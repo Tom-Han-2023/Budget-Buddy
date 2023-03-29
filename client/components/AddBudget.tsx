@@ -1,9 +1,13 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import { useState } from 'react'
-import { addBudgets } from '../actions/budgets'
+import { addBudget } from '../actions/budgets'
 import { useAppDispatch } from '../hooks'
 
-export default function AddBudget() {
+interface Props {
+  token: string
+}
+
+export default function AddBudget(prop: Props) {
   const timestamp = Date.now()
   const date = new Date(timestamp)
 
@@ -13,17 +17,16 @@ export default function AddBudget() {
 
   const formattedDate = `${year}-${month}-${day}`
   const dispatch = useAppDispatch()
-  const { user } = useAuth0()
+
   const [budget, setBudget] = useState({
     name: '',
     amount: 0,
     date: formattedDate,
   })
-  const userId = user?.sub
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    dispatch(addBudgets(budget, userId as string))
+    dispatch(addBudget(budget, prop.token))
     setBudget({ name: '', amount: 0, date: formattedDate })
   }
 

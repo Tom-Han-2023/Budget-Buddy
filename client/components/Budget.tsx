@@ -1,5 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { fetchBudgets } from '../actions/budgets'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import AddBudget from './AddBudget'
@@ -7,16 +7,25 @@ import DeleteBudget from './DeleteBudget'
 import UpdatedBudget from './UpdateBudget'
 
 function Budget() {
-  const { logout, user } = useAuth0()
+  const { getAccessTokenSilently, user, isAuthenticated } = useAuth0()
   const dispatch = useAppDispatch()
   const budgets = useAppSelector((state) => state.budgetReducer)
-  function handleSignOut() {
-    logout()
-  }
+  const [token, setToken] = useState<null | string>(null)
 
   useEffect(() => {
-    dispatch(fetchBudgets(user?.sub as string))
-  }, [dispatch, user])
+    getAccessTokenSilently({
+      authorizationParams: {
+        audience: 'https://budgets/api',
+      },
+    })
+      .then((accessToken) => {
+        setToken(accessToken)
+        dispatch(fetchBudgets(accessToken))
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }, [dispatch, getAccessTokenSilently])
 
   if (budgets.isLoading) {
     return (
@@ -42,20 +51,18 @@ function Budget() {
               <h2>{budget.name}</h2>
               <p>Amount Allocated: ${budget.amount}</p>
               <p>Date Budget was created: {budget.date}</p>
-              <DeleteBudget budgetid={budget.id} userId={user?.sub as string} />
+              <DeleteBudget budgetid={budget.id} token={token as string} />
               <UpdatedBudget
                 budgetAmount={budget.amount}
                 budgetName={budget.name}
                 budgetid={budget.id}
-                userId={user?.sub as string}
+                token={token as string}
               />
             </div>
           )
         })}
       </div>
-      <AddBudget />
-
-      <button onClick={handleSignOut}>Sign Out</button>
+      <AddBudget token={token} />
     </>
   )
 }

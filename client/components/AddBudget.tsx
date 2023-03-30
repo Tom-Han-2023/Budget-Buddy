@@ -1,21 +1,16 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import { useState } from 'react'
 import { addBudget } from '../actions/budgets'
+import getDate from '../actions/getDate'
 import { useAppDispatch } from '../hooks'
 
 interface Props {
   token: string
 }
 
-export default function AddBudget(prop: Props) {
-  const timestamp = Date.now()
-  const date = new Date(timestamp)
+export default function AddBudget(prop: Props) { 
 
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-
-  const formattedDate = `${year}-${month}-${day}`
+  const formattedDate = getDate()
   const dispatch = useAppDispatch()
 
   const [budget, setBudget] = useState({

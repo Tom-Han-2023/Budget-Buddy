@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { updateBudget } from '../actions/budgets'
+import getDate from '../actions/getDate'
 import { useAppDispatch } from '../hooks'
 
 interface Prop {
@@ -51,7 +52,7 @@ function UpdatedBudget(props: Prop) {
             onChange={(e) => {
               setBudget({ ...budget, amount: parseInt(e.target.value) })
             }}
-          />
+          />{' '}
           <button type="submit">Update Budget</button>
         </form>
       )}

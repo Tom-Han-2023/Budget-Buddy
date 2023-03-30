@@ -7,7 +7,7 @@ import DeleteBudget from './DeleteBudget'
 import UpdatedBudget from './UpdateBudget'
 
 function Budget() {
-  const { getAccessTokenSilently, user, isAuthenticated } = useAuth0()
+  const { getAccessTokenSilently, user } = useAuth0()
   const dispatch = useAppDispatch()
   const budgets = useAppSelector((state) => state.budgetReducer)
   const [token, setToken] = useState<null | string>(null)
@@ -62,7 +62,7 @@ function Budget() {
           )
         })}
       </div>
-      <AddBudget token={token} />
+      <AddBudget token={token as string} />
     </>
   )
 }

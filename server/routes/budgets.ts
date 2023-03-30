@@ -12,18 +12,15 @@ import {
 } from '../db/db'
 
 const router = express.Router()
-const userId = 1
 
 // /api/v1/budgets'
 router.get('/', checkJwt, async (req: JwtRequest, res) => {
   try {
     const userId = req.auth?.sub
-    console.log(userId)
     if (!userId) {
       console.error('No userId')
       return res.status(401).send('Unauthorized')
     }
-
     const budgets = await getAllBudgets(userId)
     res.json(budgets)
   } catch (error) {
@@ -69,8 +66,13 @@ router.get('/:budgetId', async (req, res) => {
 
 // /api/v1/budgets/:id
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', checkJwt, async (req: JwtRequest, res) => {
   try {
+    const userId = req.auth?.sub
+    if (!userId) {
+      console.error('No userId')
+      return res.status(401).send('Unauthorized')
+    }
     const budgetId = parseInt(req.params.id)
     const newBudgetDetail = { ...req.body }
     const updatedBudget = await updateBudget(budgetId, newBudgetDetail)
@@ -84,12 +86,11 @@ router.patch('/:id', async (req, res) => {
 })
 
 // /api/v1/budgets/:id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', checkJwt, async (req, res) => {
   try {
     const budgetId = parseInt(req.params.id)
-    const { userId } = req.query as unknown as Query
-    const updatedBudgetList = await deleteBudget(budgetId, userId)
-    res.json(updatedBudgetList)
+    await deleteBudget(budgetId)
+    res.json(budgetId)
   } catch (error) {
     console.log(error)
     res.status(500).json({

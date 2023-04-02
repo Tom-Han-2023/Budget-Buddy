@@ -9,9 +9,12 @@ import store from './store'
 document.addEventListener('DOMContentLoaded', () => {
   createRoot(document.getElementById('app') as HTMLElement).render(
     <Auth0Provider
-      domain="tohora-2023-tom.au.auth0.com"
-      clientId="62vukZWmZHUa7X7jAhvF1mPxf3Hg6Tz1"
-      redirectUri={window.location.origin}
+      domain="tohora-2023-tomh.au.auth0.com"
+      clientId="vVLt7WpBJPn0MBh2SDiNQky0wvcleb9t"
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+        audience: 'https://budgets/api',
+      }}
     >
       <Router>
         <Provider store={store}>

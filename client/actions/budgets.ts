@@ -2,7 +2,7 @@ import { Budget, NewBudget, UpdateBudget } from '../../Models/budget'
 import {
   addBudgetToUserId,
   deleteBudget,
-  fetchBudgetsByUserID,
+  getBudgets,
   updateBudgetAPI,
 } from '../apis/budget'
 import type { ThunkAction } from '../store'
@@ -10,13 +10,17 @@ import type { ThunkAction } from '../store'
 export const REQUEST_BUDGETS = 'REQUEST_BUDGETS'
 export const RECEIVE_BUDGETS = 'RECEIVE_BUDGETS'
 export const FAILURE_BUDGETS = 'FAILURE_BUDGETS'
-export const ADD_BUDGETS = 'ADD_BUDGETS'
+export const ADD_BUDGET = 'ADD_BUDGET'
+export const UPDATE_BUDGET = 'UPDATE_BUDGET'
+export const DELETE_BUDGET = 'DELETE_BUDGET'
 
 export type BudgetAction =
   | { type: typeof REQUEST_BUDGETS }
   | { type: typeof RECEIVE_BUDGETS; payload: Budget[] }
   | { type: typeof FAILURE_BUDGETS; payload: string }
-  | { type: typeof ADD_BUDGETS; payload: Budget[] }
+  | { type: typeof ADD_BUDGET; payload: Budget }
+  | { type: typeof UPDATE_BUDGET; payload: Budget }
+  | { type: typeof DELETE_BUDGET; payload: number }
 
 export function requestBudgets(): BudgetAction {
   return {
@@ -37,10 +41,30 @@ export function failureBudgets(errorMessage: string): BudgetAction {
   }
 }
 
-export function fetchBudgets(user_id: string): ThunkAction {
+export function appendBudget(budget: Budget): BudgetAction {
+  return {
+    type: ADD_BUDGET,
+    payload: budget,
+  }
+}
+
+export function updatedBudget(budget: Budget): BudgetAction {
+  return {
+    type: UPDATE_BUDGET,
+    payload: budget,
+  }
+}
+export function deletedBudget(budgetId: number): BudgetAction {
+  return {
+    type: DELETE_BUDGET,
+    payload: budgetId,
+  }
+}
+
+export function fetchBudgets(token: string): ThunkAction {
   return (dispatch) => {
     dispatch(requestBudgets())
-    return fetchBudgetsByUserID(user_id)
+    return getBudgets(token)
       .then((budgets) => {
         dispatch(receiveBudgets(budgets))
       })
@@ -54,12 +78,11 @@ export function fetchBudgets(user_id: string): ThunkAction {
   }
 }
 
-export function addBudgets(budget: NewBudget, userId: string): ThunkAction {
+export function addBudget(budget: NewBudget, token: string): ThunkAction {
   return (dispatch) => {
-    dispatch(requestBudgets())
-    return addBudgetToUserId(budget, userId)
-      .then((budgets) => {
-        dispatch(receiveBudgets(budgets))
+    return addBudgetToUserId(budget, token)
+      .then((budget) => {
+        dispatch(appendBudget(budget))
       })
       .catch((err) => {
         if (err instanceof Error) {
@@ -71,13 +94,11 @@ export function addBudgets(budget: NewBudget, userId: string): ThunkAction {
   }
 }
 
-export function removeBudget(budgetId: number, userId: string): ThunkAction {
+export function removeBudget(budgetId: number, token: string): ThunkAction {
   return (dispatch) => {
-    dispatch(requestBudgets())
-    return deleteBudget(budgetId, userId)
-      .then((budgets) => {
-        console.log(budgets)
-        dispatch(receiveBudgets(budgets))
+    return deleteBudget(budgetId, token)
+      .then((budgetId) => {
+        dispatch(deletedBudget(budgetId))
       })
       .catch((err) => {
         if (err instanceof Error) {
@@ -91,15 +112,13 @@ export function removeBudget(budgetId: number, userId: string): ThunkAction {
 
 export function updateBudget(
   budgetId: number,
-  userId: string,
+  token: string,
   budgetDetail: UpdateBudget
 ): ThunkAction {
   return (dispatch) => {
-    dispatch(requestBudgets())
-    return updateBudgetAPI(budgetId, userId, budgetDetail)
-      .then((budgets) => {
-        console.log(budgets)
-        dispatch(receiveBudgets(budgets))
+    return updateBudgetAPI(budgetId, token, budgetDetail)
+      .then((budget) => {
+        dispatch(updatedBudget(budget))
       })
       .catch((err) => {
         if (err instanceof Error) {

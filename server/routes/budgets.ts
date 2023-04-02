@@ -1,4 +1,5 @@
 import express from 'express'
+import checkJwt, { JwtRequest } from '../auth0'
 import {
   addBudgets,
   addExpenses,
@@ -11,15 +12,15 @@ import {
 } from '../db/db'
 
 const router = express.Router()
-const userId = 1
-interface Query {
-  userId: string
-}
 
 // /api/v1/budgets'
-router.get('/', async (req, res) => {
+router.get('/', checkJwt, async (req: JwtRequest, res) => {
   try {
-    const { userId } = req.query as Query
+    const userId = req.auth?.sub
+    if (!userId) {
+      console.error('No userId')
+      return res.status(401).send('Unauthorized')
+    }
     const budgets = await getAllBudgets(userId)
     res.json(budgets)
   } catch (error) {
@@ -31,11 +32,16 @@ router.get('/', async (req, res) => {
 })
 
 // /api/v1/budgets'
-router.post('/', async (req, res) => {
+router.post('/', checkJwt, async (req: JwtRequest, res) => {
   try {
     const newBudget = { ...req.body }
-    const updatedlist = await addBudgets(newBudget)
-    res.json(updatedlist)
+    const userId = req.auth?.sub
+    if (!userId) {
+      console.error('No userId')
+      return res.status(401).send('Unauthorized')
+    }
+    const [newBudgetId] = await addBudgets(newBudget, userId)
+    res.json({ ...req.body, user_id: userId, id: newBudgetId })
   } catch (error) {
     console.log(error)
     res.status(500).json({
@@ -60,10 +66,15 @@ router.get('/:budgetId', async (req, res) => {
 
 // /api/v1/budgets/:id
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', checkJwt, async (req: JwtRequest, res) => {
   try {
+    const userId = req.auth?.sub
+    if (!userId) {
+      console.error('No userId')
+      return res.status(401).send('Unauthorized')
+    }
     const budgetId = parseInt(req.params.id)
-    const newBudgetDetail = { ...req.body }    
+    const newBudgetDetail = { ...req.body }
     const updatedBudget = await updateBudget(budgetId, newBudgetDetail)
     res.json(updatedBudget)
   } catch (error) {
@@ -75,12 +86,11 @@ router.patch('/:id', async (req, res) => {
 })
 
 // /api/v1/budgets/:id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', checkJwt, async (req, res) => {
   try {
     const budgetId = parseInt(req.params.id)
-    const { userId } = req.query as unknown as Query
-    const updatedBudgetList = await deleteBudget(budgetId, userId)
-    res.json(updatedBudgetList)
+    await deleteBudget(budgetId)
+    res.json(budgetId)
   } catch (error) {
     console.log(error)
     res.status(500).json({

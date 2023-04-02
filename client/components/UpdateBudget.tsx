@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { updateBudget } from '../actions/budgets'
+import getDate from '../actions/getDate'
 import { useAppDispatch } from '../hooks'
 
 interface Prop {
   budgetid: number
-  userId: string
+  token: string
   budgetName: string
   budgetAmount: number
 }
@@ -19,7 +20,7 @@ function UpdatedBudget(props: Prop) {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    dispatch(updateBudget(props.budgetid,props.userId, budget))
+    dispatch(updateBudget(props.budgetid, props.token, budget))
     setClicked(false)
   }
 
@@ -51,7 +52,7 @@ function UpdatedBudget(props: Prop) {
             onChange={(e) => {
               setBudget({ ...budget, amount: parseInt(e.target.value) })
             }}
-          />
+          />{' '}
           <button type="submit">Update Budget</button>
         </form>
       )}

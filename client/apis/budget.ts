@@ -1,10 +1,10 @@
 import request from 'superagent'
 import { Budget, NewBudget, UpdateBudget } from '../../Models/budget'
 
-export function fetchBudgetsByUserID(userId: string): Promise<Budget[]> {
+export function getBudgets(token: string): Promise<Budget[]> {
   return request
     .get(`/api/v1/budgets`)
-    .query({ userId })
+    .set('Authorization', `Bearer ${token}`)
     .then((res) => res.body)
     .catch((err) => {
       console.error(err)
@@ -14,11 +14,12 @@ export function fetchBudgetsByUserID(userId: string): Promise<Budget[]> {
 
 export function addBudgetToUserId(
   newBudget: NewBudget,
-  user_id: string
-): Promise<Budget[]> {
+  token: string
+): Promise<Budget> {
   return request
     .post(`/api/v1/budgets`)
-    .send({ ...newBudget, user_id })
+    .set('Authorization', `Bearer ${token}`)
+    .send({ ...newBudget })
     .then((res) => res.body)
     .catch((err) => {
       console.error(err)
@@ -28,11 +29,11 @@ export function addBudgetToUserId(
 
 export function deleteBudget(
   budgetId: number,
-  userId: string
-): Promise<Budget[]> {
+  token: string
+): Promise<number> {
   return request
     .delete(`/api/v1/budgets/${budgetId}`)
-    .query({ userId })
+    .set('Authorization', `Bearer ${token}`)
     .then((res) => res.body)
     .catch((err) => {
       console.error(err)
@@ -42,12 +43,13 @@ export function deleteBudget(
 
 export function updateBudgetAPI(
   budgetId: number,
-  user_id: string,
+  token: string,
   budgetDetail: UpdateBudget
-): Promise<Budget[]> {
+): Promise<Budget> {
   return request
     .patch(`/api/v1/budgets/${budgetId}`)
-    .send({ ...budgetDetail, user_id })
+    .send({ ...budgetDetail })
+    .set('Authorization', `Bearer ${token}`)
     .then((res) => res.body)
     .catch((err) => {
       console.error(err)

@@ -11,36 +11,37 @@ export function getAllBudgets(
 
 export async function addBudgets(
   newBudget: Partial<Budget>,
+  userId: string,
   db = connection
-): Promise<Budget[]> {
-  await db('budgets').insert({
-    user_id: newBudget.user_id,
+): Promise<number[]> {
+  return db('budgets').insert({
+    user_id: userId,
     name: newBudget.name,
     amount: newBudget.amount,
     date: newBudget.date,
   })
-  return db('budgets').where({ user_id: newBudget.user_id }).select()
 }
 
 export async function deleteBudget(
   budgetId: number,
-  userId: string,
   db = connection
-): Promise<Budget[]> {
-    await db('budgets').where({ id: budgetId }).del()
-  return db('budgets').where({ user_id: userId }).select()
+): Promise<number> {
+  return db('budgets').where({ id: budgetId }).del()
 }
 
 export async function updateBudget(
   id: number,
   newBudgetDetail: Partial<Budget>,
   db = connection
-): Promise<Budget[]> {
-  await db('budgets').where({ id }).update({
-    name: newBudgetDetail.name,
-    amount: newBudgetDetail.amount,
-  })
-  return db('budgets').where({ user_id: newBudgetDetail.user_id }).select()
+): Promise<Budget> {
+  const [updatedBudget] = await db('budgets')
+    .where({ id })
+    .update({
+      name: newBudgetDetail.name,
+      amount: newBudgetDetail.amount,
+    })
+    .returning('*')
+  return updatedBudget
 }
 
 export async function getAllExpenses(

@@ -3,19 +3,19 @@ import { useAppDispatch } from '../hooks'
 
 interface Prop {
   budgetid: number
-  userId: string
+  token: string
 }
 
 function DeleteBudget(prop: Prop) {
   const dispatch = useAppDispatch()
 
-  function handleClick(budgetid: number, userid: string) {
-    dispatch(removeBudget(budgetid, userid))
+  function handleClick(budgetid: number, token: string) {
+    dispatch(removeBudget(budgetid, token))
   }
 
   return (
     <>
-      <button onClick={() => handleClick(prop.budgetid, prop.userId)}>
+      <button onClick={() => handleClick(prop.budgetid, prop.token)}>
         Delete Budget
       </button>
     </>

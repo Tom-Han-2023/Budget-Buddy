@@ -1,6 +1,7 @@
 import { IfAuthenticated, IfNotAuthenticated } from './Authenticated'
 import Budget from './Budget'
 import Home from './Home'
+import Logoff from './LogOff'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       </IfNotAuthenticated>
       <IfAuthenticated>
         <Budget />
+        <Logoff />
       </IfAuthenticated>
       <footer>
         <h2>Made by Tom Han</h2>

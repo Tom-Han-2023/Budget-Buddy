@@ -13,7 +13,7 @@ export async function addBudgets(
   newBudget: Partial<Budget>,
   userId: string,
   db = connection
-): Promise<number> {
+): Promise<number[]> {
   return db('budgets').insert({
     user_id: userId,
     name: newBudget.name,

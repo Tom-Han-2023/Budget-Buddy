@@ -53,9 +53,15 @@ function UpdatedBudget(props: Prop) {
             id="new-budget-amount"
             value={budget.amount}
             onChange={(e) => {
-              setBudget({ ...budget, amount: parseInt(e.target.value) })
+              const value = e.target.value
+              if (value === '') {
+                setBudget({ ...budget, amount: 0 })
+              } else {
+                const amount = Number(value)
+                setBudget({ ...budget, amount })
+              }
             }}
-          />{' '}
+          />
           <button type="submit">Update Budget</button>
         </form>
       )}

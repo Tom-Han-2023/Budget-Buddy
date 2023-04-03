@@ -44,15 +44,11 @@ export async function updateBudget(
   id: number,
   newBudgetDetail: Partial<Budget>,
   db = connection
-): Promise<Budget> {
-  const [updatedBudget] = await db('budgets')
-    .where({ id })
-    .update({
-      name: newBudgetDetail.name,
-      amount: newBudgetDetail.amount,
-    })
-    .returning('*')
-  return updatedBudget
+): Promise {
+  return db('budgets').where({ id }).update({
+    name: newBudgetDetail.name,
+    amount: newBudgetDetail.amount,
+  })
 }
 
 export async function getAllExpenses(

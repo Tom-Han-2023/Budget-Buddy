@@ -42,7 +42,7 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
       return res.status(401).send('Unauthorized')
     }
     const newBudgetId = await addBudgets(newBudget, userId)
-    res.json({ ...req.body, user_id: userId, id: newBudgetId[0] })
+    res.json({ id: newBudgetId[0], user_id: userId, ...req.body })
   } catch (error) {
     console.log(error)
     res.status(500).json({
@@ -76,8 +76,8 @@ router.patch('/:id', checkJwt, async (req: JwtRequest, res) => {
     }
     const budgetId = parseInt(req.params.id)
     const newBudgetDetail = { ...req.body }
-    const updatedBudget = await updateBudget(budgetId, newBudgetDetail)
-    res.json(updatedBudget)
+    await updateBudget(budgetId, newBudgetDetail)
+    res.json({ id: budgetId, user_id: userId, ...req.body })
   } catch (error) {
     console.log(error)
     res.status(500).json({

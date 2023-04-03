@@ -17,11 +17,12 @@ const router = express.Router()
 router.get('/', checkJwt, async (req: JwtRequest, res) => {
   try {
     const userId = req.auth?.sub
-    if (!userId) {
+    const { year, month } = req.query
+    if (!userId || !year || !month) {
       console.error('No userId')
       return res.status(401).send('Unauthorized')
     }
-    const budgets = await getAllBudgets(userId)
+    const budgets = await getAllBudgets(userId, year as string, month as string)
     res.json(budgets)
   } catch (error) {
     console.log(error)

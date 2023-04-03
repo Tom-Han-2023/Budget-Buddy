@@ -1,6 +1,6 @@
 export default function getDate() {
   const timestamp = Date.now()
-  
+
   const date = new Date(timestamp)
 
   const year = date.getFullYear()
@@ -10,4 +10,3 @@ export default function getDate() {
   const formattedDate = `${year}-${month}-${day}`
   return formattedDate
 }
-s

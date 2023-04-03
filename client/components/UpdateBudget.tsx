@@ -1,17 +1,18 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { updateBudget } from '../actions/budgets'
-import getDate from '../actions/getDate'
 import { useAppDispatch } from '../hooks'
+import { RootState } from '../store'
 
 interface Prop {
   budgetid: number
-  token: string
   budgetName: string
   budgetAmount: number
 }
 
 function UpdatedBudget(props: Prop) {
   const dispatch = useAppDispatch()
+  const accessToken = useSelector((state: RootState) => state.tokenReducer)
   const [budget, setBudget] = useState({
     name: props.budgetName,
     amount: props.budgetAmount,
@@ -20,7 +21,9 @@ function UpdatedBudget(props: Prop) {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    dispatch(updateBudget(props.budgetid, props.token, budget))
+    dispatch(
+      updateBudget(props.budgetid, accessToken.accessToken as string, budget)
+    )
     setClicked(false)
   }
 

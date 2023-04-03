@@ -1,4 +1,4 @@
-import { Budget, NewBudget, UpdateBudget } from '../../Models/budget'
+import { Budget, NewBudget } from '../../Models/budget'
 import {
   addBudgetToUserId,
   deleteBudget,
@@ -61,10 +61,14 @@ export function deletedBudget(budgetId: number): BudgetAction {
   }
 }
 
-export function fetchBudgets(token: string): ThunkAction {
+export function fetchBudgets(
+  token: string,
+  year: string,
+  month: string
+): ThunkAction {
   return (dispatch) => {
     dispatch(requestBudgets())
-    return getBudgets(token)
+    return getBudgets(token, year, month)
       .then((budgets) => {
         dispatch(receiveBudgets(budgets))
       })
@@ -113,7 +117,7 @@ export function removeBudget(budgetId: number, token: string): ThunkAction {
 export function updateBudget(
   budgetId: number,
   token: string,
-  budgetDetail: UpdateBudget
+  budgetDetail: NewBudget
 ): ThunkAction {
   return (dispatch) => {
     return updateBudgetAPI(budgetId, token, budgetDetail)

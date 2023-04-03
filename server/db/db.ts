@@ -4,9 +4,21 @@ import connection from './connection'
 
 export function getAllBudgets(
   userId: string,
+  year: string,
+  month: string,
   db = connection
 ): Promise<Budget[]> {
-  return db('budgets').where({ user_id: userId }).select()
+  const monthNumber = new Date(Date.parse(`${month} 1, ${year}`)).getMonth()
+
+  const startDate = new Date(parseInt(year), monthNumber, 1)
+  const endDate = new Date(parseInt(year), monthNumber + 1, 0)
+
+  return (
+    db('budgets')
+      .where('user_id', userId)
+      // .whereBetween('created_at', [startDate, endDate])
+      .select('id', 'user_id', 'name', 'amount')
+  )
 }
 
 export async function addBudgets(
@@ -14,12 +26,10 @@ export async function addBudgets(
   userId: string,
   db = connection
 ): Promise<number[]> {
-  
   return db('budgets').insert({
     user_id: userId,
     name: newBudget.name,
     amount: newBudget.amount,
-    date: newBudget.date,
   })
 }
 

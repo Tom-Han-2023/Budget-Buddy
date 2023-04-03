@@ -1,28 +1,23 @@
-import { useAuth0 } from '@auth0/auth0-react'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { addBudget } from '../actions/budgets'
-import getDate from '../actions/getDate'
+
 import { useAppDispatch } from '../hooks'
+import { RootState } from '../store'
 
-interface Props {
-  token: string
-}
-
-export default function AddBudget(prop: Props) { 
-
-  const formattedDate = getDate()
+export default function AddBudget() {
   const dispatch = useAppDispatch()
+  const accessToken = useSelector((state: RootState) => state.tokenReducer)
 
   const [budget, setBudget] = useState({
     name: '',
     amount: 0,
-    date: formattedDate,
   })
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    dispatch(addBudget(budget, prop.token))
-    setBudget({ name: '', amount: 0, date: formattedDate })
+    dispatch(addBudget(budget, accessToken.accessToken as string))
+    setBudget({ name: '', amount: 0 })
   }
 
   return (
@@ -52,17 +47,7 @@ export default function AddBudget(prop: Props) {
             setBudget({ ...budget, amount: parseInt(e.target.value) })
           }}
         />
-        <label htmlFor="budget-date" hidden>
-          Todays date
-        </label>
-        <input
-          readOnly
-          hidden
-          type="number"
-          name="budget-date"
-          id="budget-date"
-          value={formattedDate}
-        />
+
         <button type="submit">Add Budget</button>
       </form>
     </>

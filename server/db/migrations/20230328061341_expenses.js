@@ -14,7 +14,7 @@ exports.up = function (knex) {
       .inTable('budgets')
       .onDelete('CASCADE')
       .notNullable()
-    table.integer('user_id').notNullable()
+    table.string('user_id').notNullable()
     table.date('date').notNullable()
   })
 }

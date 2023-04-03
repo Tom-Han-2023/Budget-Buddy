@@ -13,14 +13,14 @@ export async function addBudgets(
   newBudget: Partial<Budget>,
   userId: string,
   db = connection
-): Promise<number> {
-  const [newBudgetId] = await db('budgets').insert({
+): Promise<number[]> {
+  
+  return db('budgets').insert({
     user_id: userId,
     name: newBudget.name,
     amount: newBudget.amount,
     date: newBudget.date,
   })
-  return newBudgetId
 }
 
 export async function deleteBudget(

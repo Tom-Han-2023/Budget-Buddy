@@ -41,7 +41,7 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
       return res.status(401).send('Unauthorized')
     }
     const newBudgetId = await addBudgets(newBudget, userId)
-    res.json({ ...req.body, user_id: userId, id: newBudgetId })
+    res.json({ ...req.body, user_id: userId, id: newBudgetId[0] })
   } catch (error) {
     console.log(error)
     res.status(500).json({

@@ -33,7 +33,7 @@ function Budget() {
         })
     } else dispatch(fetchBudgets(accessToken, year, month))
   }, [dispatch, accessToken, getAccessTokenSilently, year, month])
-  console.log(budgets)
+  
 
   if (budgets.isLoading) {
     return (

@@ -25,14 +25,14 @@ export async function addBudgets(
   newBudget: Partial<Budget>,
   userId: string,
   db = connection
-): Promise<{ id: number }> {
+): Promise<{ id: number }[]> {
   return db('budgets')
     .insert({
       user_id: userId,
       name: newBudget.name,
       amount: newBudget.amount,
     })
-    .returning('id')
+    .returning(['id'])
 }
 
 export async function deleteBudget(

@@ -1,7 +1,5 @@
-import { useSelector } from 'react-redux'
 import { removeBudget } from '../actions/budgets'
-import { useAppDispatch } from '../hooks'
-import { RootState } from '../store'
+import { useAppDispatch, useAppSelector } from '../hooks'
 
 interface Prop {
   budgetid: number
@@ -9,7 +7,7 @@ interface Prop {
 
 function DeleteBudget(prop: Prop) {
   const dispatch = useAppDispatch()
-  const accessToken = useSelector((state: RootState) => state.tokenReducer)
+  const accessToken = useAppSelector((state) => state.token)
 
   function handleClick(budgetid: number, token: string) {
     dispatch(removeBudget(budgetid, token))

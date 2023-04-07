@@ -1,5 +1,6 @@
 import { IfAuthenticated, IfNotAuthenticated } from './Authenticated'
 import Budget from './Budget'
+import Expenses from './Expenses'
 import Home from './Home'
 import Logoff from './LogOff'
 
@@ -14,6 +15,7 @@ function App() {
       </IfNotAuthenticated>
       <IfAuthenticated>
         <Budget />
+        <Expenses />
         <Logoff />
       </IfAuthenticated>
       <footer>

@@ -1,5 +1,7 @@
 import express from 'express'
+import checkJwt, { JwtRequest } from '../auth0'
 import {
+  addExpenses,
   deleteExpenses,
   getAllExpenses,
   getExpenseById,
@@ -9,13 +11,28 @@ import {
 const router = express.Router()
 
 export default router
-const userId = 1
 
-// /api/v1/spendings'
-router.get('/', async (req, res) => {
+// /api/v1/expenses'
+router.get('/', checkJwt, async (req: JwtRequest, res) => {
   try {
-    const expenses = await getAllExpenses(userId)
-    res.json(expenses)
+    const { year, month } = req.query
+    const userId = req.auth?.sub
+    if (!userId || !year || !month) {
+      console.error('No userId')
+      return res.status(401).send('Unauthorized')
+    }
+
+    const expenses = await getAllExpenses(
+      userId,
+      year as string,
+      month as string
+    )
+    const AllExpenses = expenses.map((expense) => {
+      return expense.budgetName
+        ? expense
+        : { ...expense, budgetName: 'Uncategorized' }
+    })
+    res.json(AllExpenses)
   } catch (error) {
     console.log(error)
     res.status(500).json({
@@ -24,7 +41,26 @@ router.get('/', async (req, res) => {
   }
 })
 
-// /api/v1/spendings/:id'
+// /api/v1/expenses/:budgetId
+router.post('/', checkJwt, async (req: JwtRequest, res) => {
+  try {
+    const userId = req.auth?.sub
+    if (!userId) {
+      console.error('No userId')
+      return res.status(401).send('Unauthorized')
+    }
+    const newExpense = { ...req.body }
+    const [{ id }] = await addExpenses(userId, newExpense)
+    res.json({ id, user_id: userId, ...req.body })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      error: 'There was an error trying to delete the post :(',
+    })
+  }
+})
+
+// /api/v1/expenses/:id'
 router.get('/:expenseid', async (req, res) => {
   try {
     const expenseId = parseInt(req.params.expenseid)
@@ -38,7 +74,7 @@ router.get('/:expenseid', async (req, res) => {
   }
 })
 
-// /api/v1/spendings/:id'
+// /api/v1/expenses/:id'
 router.patch('/:expenseid', async (req, res) => {
   try {
     const expenseId = parseInt(req.params.expenseid)
@@ -53,7 +89,7 @@ router.patch('/:expenseid', async (req, res) => {
   }
 })
 
-// /api/v1/spendings/:id'
+// /api/v1/expenses/:id'
 router.delete('/:expenseid', async (req, res) => {
   try {
     const expenseId = parseInt(req.params.expenseid)

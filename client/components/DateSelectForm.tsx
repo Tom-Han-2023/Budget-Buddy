@@ -1,41 +1,28 @@
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { fetchBudgets } from '../actions/budgets'
+import { setMonth, setYear } from '../actions/yearMonth'
+import { useAppDispatch, useAppSelector } from '../hooks'
 
-import { useAppDispatch } from '../hooks'
-import { RootState } from '../store'
+function DateSelectForm() {
+  const { year, month } = useAppSelector((state) => state.yearMonth)
+  const dispatch = useAppDispatch()
 
-interface Prop {
-  setMonth: React.Dispatch<React.SetStateAction<string>>
-  setYear: React.Dispatch<React.SetStateAction<string>>
-  year: string
-  month: string
-}
-
-function DateSelectForm(prop: Prop) {
   // Handle year change
   function handleYearChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    prop.setYear(event.target.value)
+    dispatch(setYear(event.target.value))
   }
 
   // Handle month change
   function handleMonthChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    prop.setMonth(event.target.value)
+    dispatch(setMonth(event.target.value))
   }
 
   return (
     <form>
       <label htmlFor="year">
         Year:
-        <select
-          id="year"
-          name="year"
-          value={prop.year}
-          onChange={handleYearChange}
-        >
-          <option value="2022">2022</option>
+        <select id="year" name="year" value={year} onChange={handleYearChange}>
           <option value="2023">2023</option>
           <option value="2024">2024</option>
+          <option value="2025">2025</option>
         </select>
       </label>
       <label htmlFor="month">
@@ -43,7 +30,7 @@ function DateSelectForm(prop: Prop) {
         <select
           id="month"
           name="month"
-          value={prop.month}
+          value={month}
           onChange={handleMonthChange}
         >
           <option value="January">January</option>

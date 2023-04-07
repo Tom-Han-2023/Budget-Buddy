@@ -8,7 +8,7 @@ exports.up = function (knex) {
     table.string('name').notNullable()
     table.decimal('amount', 12, 2).notNullable()
     table.string('user_id').notNullable()
-    table.timestamps(true, true)
+    table.date('date').notNullable()
   })
 }
 

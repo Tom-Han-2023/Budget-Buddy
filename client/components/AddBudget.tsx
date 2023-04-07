@@ -1,23 +1,23 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { addBudget } from '../actions/budgets'
-
-import { useAppDispatch } from '../hooks'
-import { RootState } from '../store'
+import { useAppDispatch, useAppSelector } from '../hooks'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 export default function AddBudget() {
   const dispatch = useAppDispatch()
-  const accessToken = useSelector((state: RootState) => state.tokenReducer)
+  const accessToken = useAppSelector((state) => state.token)
 
   const [budget, setBudget] = useState({
     name: '',
     amount: 0,
+    date: new Date(),
   })
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     dispatch(addBudget(budget, accessToken.accessToken as string))
-    setBudget({ name: '', amount: 0 })
+    setBudget({ name: '', amount: 0, date: new Date() })
   }
 
   return (
@@ -53,7 +53,14 @@ export default function AddBudget() {
             }
           }}
         />
-
+        <label htmlFor="budget-date">Month and Year</label>
+        <DatePicker
+          selected={budget.date}
+          onChange={(date: Date) => setBudget({ ...budget, date })}
+          dateFormat="MMMM yyyy"
+          showMonthYearPicker
+          id="budget-date"
+        />
         <button type="submit">Add Budget</button>
       </form>
     </>

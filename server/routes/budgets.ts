@@ -2,7 +2,6 @@ import express from 'express'
 import checkJwt, { JwtRequest } from '../auth0'
 import {
   addBudgets,
-  addExpenses,
   deleteBudget,
   getAllBudgets,
   getAllExpensesByCategory,
@@ -17,6 +16,7 @@ const router = express.Router()
 router.get('/', checkJwt, async (req: JwtRequest, res) => {
   try {
     const userId = req.auth?.sub
+
     const { year, month } = req.query
     if (!userId || !year || !month) {
       console.error('No userId')
@@ -110,20 +110,6 @@ router.get('/:budgetId/expenses', async (req, res) => {
     console.log(error)
     res.status(500).json({
       error: 'There was an error trying to get all expenses under budget :(',
-    })
-  }
-})
-// /api/v1/budgets/:budgetId/expenses
-router.post('/:budgetId/expenses', async (req, res) => {
-  try {
-    const budgetId = parseInt(req.params.budgetId)
-    const newExpense = { ...req.body }
-    await addExpenses(userId, budgetId, newExpense)
-    res.status(200).json('ok')
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({
-      error: 'There was an error trying to delete the post :(',
     })
   }
 })

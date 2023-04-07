@@ -1,4 +1,5 @@
 const { join } = require('node:path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
   entry: join(__dirname, './index.tsx'),
@@ -14,10 +15,19 @@ module.exports = {
         loader: 'babel-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
     ],
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   devtool: 'source-map',
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+    }),
+  ],
 }

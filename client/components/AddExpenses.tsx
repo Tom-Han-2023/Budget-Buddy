@@ -14,7 +14,7 @@ export default function AddExpenses() {
     category: '',
     amount: 0,
     budget_id: null as number | null,
-    date: new Date(),
+    date: new Date(`${year}-${month}-01`),
     budgetName: '',
   })
 
@@ -46,7 +46,7 @@ export default function AddExpenses() {
       category: '',
       amount: 0,
       budget_id: null,
-      date: new Date(),
+      date: new Date(`${year}-${month}-01`),
       budgetName: '',
     })
   }

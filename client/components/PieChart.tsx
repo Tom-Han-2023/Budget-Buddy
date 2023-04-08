@@ -24,9 +24,9 @@ function PieChart() {
       value: totalSpending,
     }
   })
-  console.log('budgetNames', budgetNames)
+ 
 
-  console.log(data)
+  
 
   const chartData = {
     labels: data.map((budget) => budget.label),

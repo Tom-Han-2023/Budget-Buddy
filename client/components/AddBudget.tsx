@@ -11,7 +11,7 @@ export default function AddBudget() {
   const [budget, setBudget] = useState({
     name: '',
     amount: 0,
-    date: new Date(),
+    date: new Date(`${year}-${month}-01`),
   })
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function AddBudget() {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     dispatch(addBudget(budget, accessToken.accessToken as string))
-    setBudget({ name: '', amount: 0, date: new Date() })
+    setBudget({ name: '', amount: 0, date: new Date(`${year}-${month}-01`) })
   }
 
   return (

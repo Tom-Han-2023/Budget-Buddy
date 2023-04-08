@@ -82,7 +82,7 @@ export async function getAllExpenses(
   ).toISOString()
 
   return db('expenses')
-    .leftJoin('budgets', 'expenses.budget_id', 'budgets.id')
+    .leftJoin('budgets', 'expenses.budget_id', 'budgets.id')  
     .where({ 'expenses.user_id': userId })
     .whereBetween('expenses.date', [startDateLocal, endDateLocal])
     .select('expenses.*', 'budgets.name as budgetName')

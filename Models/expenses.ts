@@ -9,3 +9,4 @@ export interface Expenses {
 }
 
 export type NewExpense = Omit<Expenses, 'id' | 'user_id' | 'budgetName'>
+

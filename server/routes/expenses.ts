@@ -41,7 +41,7 @@ router.get('/', checkJwt, async (req: JwtRequest, res) => {
   }
 })
 
-// /api/v1/expenses/:budgetId
+// /api/v1/expenses/
 router.post('/', checkJwt, async (req: JwtRequest, res) => {
   try {
     const userId = req.auth?.sub
@@ -75,12 +75,17 @@ router.get('/:expenseid', checkJwt, async (req: JwtRequest, res) => {
 })
 
 // /api/v1/expenses/:id'
-router.patch('/:expenseid', async (req, res) => {
+router.patch('/:expenseid', checkJwt, async (req: JwtRequest, res) => {
   try {
+    const userId = req.auth?.sub
+    if (!userId) {
+      console.error('No userId')
+      return res.status(401).send('Unauthorized')
+    }
     const expenseId = parseInt(req.params.expenseid)
     const newExpenseDetails = { ...req.body }
-    const expense = await updateExpense(expenseId, newExpenseDetails)
-    res.json(expense)
+    await updateExpense(expenseId, newExpenseDetails)
+    res.json({ id: expenseId, user_id: userId, ...req.body })
   } catch (error) {
     console.log(error)
     res.status(500).json({

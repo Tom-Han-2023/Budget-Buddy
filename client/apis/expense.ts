@@ -45,3 +45,20 @@ export async function deleteExpense(expenseId: number, token: string) {
     throw err
   }
 }
+
+export async function updateExpenseAPI(
+  expenseId: number,
+  token: string,
+  expenseDetail: NewExpense
+): Promise<Expenses> {
+  try {
+    const res = await request
+      .patch(`/api/v1/expenses/${expenseId}`)
+      .send({ ...expenseDetail })
+      .set('Authorization', `Bearer ${token}`)
+    return res.body
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
+}

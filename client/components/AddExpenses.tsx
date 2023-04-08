@@ -41,8 +41,7 @@ export default function AddExpenses() {
       date: expense.date.toISOString(),
       budgetName: budget && budget.name ? budget.name : 'Uncategorized',
     }
-    console.log(updatedExpense)
-
+    
     dispatch(addExpense(updatedExpense, accessToken as string))
     setExpense({
       category: '',
@@ -74,13 +73,13 @@ export default function AddExpenses() {
             setExpense({ ...expense, category: e.target.value })
           }}
         />
-        <label htmlFor="budget-amount">
+        <label htmlFor="expense-amount">
           Amount to Allocated to this budget
         </label>
         <input
           required
           type="number"
-          id="budget-amount"
+          id="expense-amount"
           value={expense.amount}
           onChange={(e) => {
             const value = e.target.value

@@ -3,6 +3,7 @@ import Budget from './Budget'
 import Expenses from './Expenses'
 import Home from './Home'
 import Logoff from './LogOff'
+import Total from './Total'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <IfAuthenticated>
         <Budget />
         <Expenses />
+        <Total />
         <Logoff />
       </IfAuthenticated>
       <footer>

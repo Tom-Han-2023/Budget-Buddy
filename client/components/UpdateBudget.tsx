@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { updateBudget } from '../actions/budgets'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { RootState } from '../store'
 
 interface Prop {
   budgetid: number
@@ -9,9 +8,9 @@ interface Prop {
   budgetAmount: number
 }
 
-function UpdatedBudget(props: Prop) {
+function UpdateBudget(props: Prop) {
   const dispatch = useAppDispatch()
-  const accessToken = useAppSelector((state: RootState) => state.token)
+  const accessToken = useAppSelector((state) => state.token)
   const [budget, setBudget] = useState({
     name: props.budgetName,
     amount: props.budgetAmount,
@@ -68,4 +67,4 @@ function UpdatedBudget(props: Prop) {
   )
 }
 
-export default UpdatedBudget
+export default UpdateBudget

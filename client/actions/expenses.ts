@@ -1,5 +1,10 @@
 import { Expenses, NewExpense } from '../../Models/expenses'
-import { addExpenseToUserId, deleteExpense, getExpenses } from '../apis/expense'
+import {
+  addExpenseToUserId,
+  deleteExpense,
+  getExpenses,
+  updateExpenseAPI,
+} from '../apis/expense'
 import type { ThunkAction } from '../store'
 
 export const REQUEST_EXPENSES = 'REQUEST_EXPENSES'
@@ -97,15 +102,15 @@ export function removeExpense(expenseId: number, token: string): ThunkAction {
   }
 }
 
-export function updateBudget(
-  budgetId: number,
-  token: string,
-  budgetDetail: NewBudget
+export function updateExpense(
+  expenseId: number,
+  expenseDetail: NewExpense,
+  token: string
 ): ThunkAction {
   return (dispatch) => {
-    return updateBudgetAPI(budgetId, token, budgetDetail)
-      .then((budget) => {
-        dispatch(updatedBudget(budget))
+    return updateExpenseAPI(expenseId, token, expenseDetail)
+      .then((expense) => {
+        dispatch(updatedExpense(expense))
       })
       .catch((err) => {
         dispatch(failureExpenses(err.message))

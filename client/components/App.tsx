@@ -3,6 +3,7 @@ import Budget from './Budget'
 import Expenses from './Expenses'
 import Home from './Home'
 import Logoff from './LogOff'
+import PieChart from './PieChart'
 import Total from './Total'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Home />
       </IfNotAuthenticated>
       <IfAuthenticated>
+        <PieChart />
         <Budget />
         <Expenses />
         <Total />

@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useAppDispatch, useAppSelector } from '../hooks'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
+import { DatePicker, DateValidationError } from '@mui/x-date-pickers'
 import { addExpense } from '../actions/expenses'
+import { PickerChangeHandlerContext } from '@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue'
 
 export default function AddExpenses() {
   const dispatch = useAppDispatch()
@@ -18,6 +18,17 @@ export default function AddExpenses() {
     date: new Date(),
     budgetName: '',
   })
+
+  useEffect(() => {
+    setExpense((prevExpense) => {
+      const monthNumber = new Date(Date.parse(`${month} 1, ${year}`)).getMonth()
+      const startDate = new Date(parseInt(year), monthNumber, 1)
+      const timezoneOffset = startDate.getTimezoneOffset() * 60 * 1000 // convert minutes to milliseconds
+      const startDateLocal = new Date(startDate.getTime() - timezoneOffset)
+
+      return { ...prevExpense, date: startDateLocal }
+    })
+  }, [year, month])
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -57,7 +68,6 @@ export default function AddExpenses() {
         <input
           required
           type="text"
-          name="expense-description"
           id="expense-description"
           value={expense.category}
           onChange={(e) => {
@@ -70,7 +80,6 @@ export default function AddExpenses() {
         <input
           required
           type="number"
-          name="budget-amount"
           id="budget-amount"
           value={expense.amount}
           onChange={(e) => {
@@ -83,13 +92,22 @@ export default function AddExpenses() {
             }
           }}
         />
-        <label htmlFor="expense-date">Month and Year</label>
         <DatePicker
-          selected={expense.date}
-          onChange={(date: Date) => setExpense({ ...expense, date })}
-          dateFormat="MMMM dd, yyyy"
-          showFullMonthYearPicker
-          id="expense-date"
+          label={'expense-date'}
+          value={expense.date}
+          onChange={(
+            newValue: Date | null,
+            context: PickerChangeHandlerContext<DateValidationError>
+          ) => {
+            if (!context.validationError) {
+              setExpense({ ...expense, date: newValue || new Date() })
+            }
+          }}
+          slotProps={{
+            textField: {
+              helperText: 'MM / DD / YYYY',
+            },
+          }}
           minDate={new Date(`${year}-${month}-01`)}
           maxDate={
             new Date(

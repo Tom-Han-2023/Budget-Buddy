@@ -7,3 +7,4 @@ export interface Budget {
 }
 
 export type NewBudget = Omit<Budget, 'id' | 'user_id'>
+export type UpdateBudget = Omit<NewBudget, 'date'>

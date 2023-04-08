@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { fetchExpenses } from '../actions/expenses'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import AddExpenses from './AddExpenses'
+import DeleteExpense from './DeleteExpense'
 
 const Expenses = () => {
   const expenses = useAppSelector((state) => state.expenses)
@@ -37,10 +38,9 @@ const Expenses = () => {
               <p>Amount: ${expense.amount}</p>
               <p>Date: {new Date(expense.date).toLocaleDateString()}</p>
               <p>Budget Category: {expense.budgetName}</p>
-
-              {/* <DeleteExpenses expensesid={expense.id} /> */}
+              <DeleteExpense expenseId={expense.id} />
               {/* <UpdatedExpenses
-                expensesAmount={expense.amount}
+                expensesAmount={expense.amosunt}
                 budgetName={expense.budgetname}
                 expenseid={expense.id}
               /> */}

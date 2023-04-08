@@ -1,4 +1,4 @@
-import { Budget, NewBudget } from '../../Models/budget'
+import { Budget, NewBudget, UpdateBudget } from '../../Models/budget'
 import {
   addBudgetToUserId,
   deleteBudget,
@@ -117,7 +117,7 @@ export function removeBudget(budgetId: number, token: string): ThunkAction {
 export function updateBudget(
   budgetId: number,
   token: string,
-  budgetDetail: NewBudget
+  budgetDetail: UpdateBudget
 ): ThunkAction {
   return (dispatch) => {
     return updateBudgetAPI(budgetId, token, budgetDetail)

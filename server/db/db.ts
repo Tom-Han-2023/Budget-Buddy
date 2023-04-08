@@ -1,4 +1,4 @@
-import { Budget } from '../../Models/budget'
+import { Budget, UpdateBudget } from '../../Models/budget'
 import { Expenses } from '../../Models/expenses'
 import connection from './connection'
 
@@ -52,7 +52,7 @@ export async function deleteBudget(
 
 export async function updateBudget(
   id: number,
-  newBudgetDetail: Partial<Budget>,
+  newBudgetDetail: UpdateBudget,
   db = connection
 ) {
   return db('budgets').where({ id }).update({

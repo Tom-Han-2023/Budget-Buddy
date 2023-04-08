@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { updateBudget } from '../actions/budgets'
-import { useAppDispatch } from '../hooks'
+import { useAppDispatch, useAppSelector } from '../hooks'
 import { RootState } from '../store'
 
 interface Prop {
@@ -12,7 +11,7 @@ interface Prop {
 
 function UpdatedBudget(props: Prop) {
   const dispatch = useAppDispatch()
-  const accessToken = useSelector((state: RootState) => state.tokenReducer)
+  const accessToken = useAppSelector((state: RootState) => state.token)
   const [budget, setBudget] = useState({
     name: props.budgetName,
     amount: props.budgetAmount,

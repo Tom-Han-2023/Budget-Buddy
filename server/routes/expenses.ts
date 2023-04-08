@@ -61,7 +61,7 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
 })
 
 // /api/v1/expenses/:id'
-router.get('/:expenseid', async (req, res) => {
+router.get('/:expenseid', checkJwt, async (req: JwtRequest, res) => {
   try {
     const expenseId = parseInt(req.params.expenseid)
     const expense = await getExpenseById(expenseId)
@@ -90,11 +90,11 @@ router.patch('/:expenseid', async (req, res) => {
 })
 
 // /api/v1/expenses/:id'
-router.delete('/:expenseid', async (req, res) => {
+router.delete('/:expenseid', checkJwt, async (req: JwtRequest, res) => {
   try {
     const expenseId = parseInt(req.params.expenseid)
     await deleteExpenses(expenseId)
-    res.status(200).json('ok')
+    res.json(expenseId)
   } catch (error) {
     console.log(error)
     res.status(500).json({

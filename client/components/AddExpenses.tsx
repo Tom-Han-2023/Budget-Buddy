@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { DatePicker, DateValidationError } from '@mui/x-date-pickers'
+import { DatePicker } from '@mui/x-date-pickers'
 import { addExpense } from '../actions/expenses'
-import { PickerChangeHandlerContext } from '@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue'
 
 export default function AddExpenses() {
   const dispatch = useAppDispatch()
@@ -41,7 +40,7 @@ export default function AddExpenses() {
       date: expense.date.toISOString(),
       budgetName: budget && budget.name ? budget.name : 'Uncategorized',
     }
-    
+
     dispatch(addExpense(updatedExpense, accessToken as string))
     setExpense({
       category: '',
@@ -80,6 +79,7 @@ export default function AddExpenses() {
           required
           type="number"
           id="expense-amount"
+          min={0}
           value={expense.amount}
           onChange={(e) => {
             const value = e.target.value
@@ -94,13 +94,8 @@ export default function AddExpenses() {
         <DatePicker
           label={'expense-date'}
           value={expense.date}
-          onChange={(
-            newValue: Date | null,
-            context: PickerChangeHandlerContext<DateValidationError>
-          ) => {
-            if (!context.validationError) {
-              setExpense({ ...expense, date: newValue || new Date() })
-            }
+          onChange={(newDate) => {
+            setExpense({ ...expense, date: newDate || new Date() })
           }}
           slotProps={{
             textField: {

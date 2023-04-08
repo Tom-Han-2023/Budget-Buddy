@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { addBudget } from '../actions/budgets'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { DatePicker, DateValidationError } from '@mui/x-date-pickers'
-import { PickerChangeHandlerContext } from '@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue'
+import { DatePicker } from '@mui/x-date-pickers'
 
 export default function AddBudget() {
   const dispatch = useAppDispatch()
@@ -52,6 +51,7 @@ export default function AddBudget() {
           required
           type="number"
           id="budget-amount"
+          min={0}
           value={budget.amount}
           onChange={(e) => {
             const value = e.target.value
@@ -68,13 +68,8 @@ export default function AddBudget() {
           label={'The month, this budget belongs to'}
           views={['year', 'month']}
           value={budget.date}
-          onChange={(
-            newValue: Date | null,
-            context: PickerChangeHandlerContext<DateValidationError>
-          ) => {
-            if (!context.validationError) {
-              setBudget({ ...budget, date: newValue || new Date() })
-            }
+          onChange={(newDate) => {
+            setBudget({ ...budget, date: newDate || new Date() })
           }}
           minDate={new Date(`${year}-${month}-01`)}
           maxDate={

@@ -49,6 +49,7 @@ function UpdateBudget(props: Prop) {
             type="number"
             name="new-budget-amount"
             id="new-budget-amount"
+            min={0}
             value={budget.amount}
             onChange={(e) => {
               const value = e.target.value

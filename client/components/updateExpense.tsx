@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { PickerChangeHandlerContext } from '@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue'
-import { DatePicker, DateValidationError } from '@mui/x-date-pickers'
+import { DatePicker } from '@mui/x-date-pickers'
 import { updateExpense } from '../actions/expenses'
 
 interface Prop {
@@ -13,19 +12,12 @@ interface Prop {
   budgetName: string
 }
 
-interface State {
-  budget_id: number | null
-  category: string
-  amount: number
-  date: Date
-}
-
 function UpdateExpense(props: Prop) {
   const dispatch = useAppDispatch()
   const { accessToken } = useAppSelector((state) => state.token)
   const { year, month } = useAppSelector((state) => state.yearMonth)
   const budgets = useAppSelector((state) => state.budgets)
-  const [expense, setExpense] = useState<State>({
+  const [expense, setExpense] = useState({
     budget_id: props.budget_id,
     category: props.category,
     amount: props.expenseAmount,
@@ -38,6 +30,7 @@ function UpdateExpense(props: Prop) {
     const budget = budgets.data.find(
       (budget) => budget.id === expense.budget_id
     )
+
     const updatedExpense = {
       ...expense,
       date: expense.date.toISOString(),
@@ -46,6 +39,7 @@ function UpdateExpense(props: Prop) {
     dispatch(
       updateExpense(props.expenseId, updatedExpense, accessToken as string)
     )
+
     setClicked(false)
   }
 
@@ -73,6 +67,7 @@ function UpdateExpense(props: Prop) {
             type="number"
             name="new-expense-amount"
             id="new-expense-amount"
+            min={0}
             value={expense.amount}
             onChange={(e) => {
               const value = e.target.value
@@ -105,14 +100,9 @@ function UpdateExpense(props: Prop) {
           <DatePicker
             label={'expense-date'}
             value={expense.date}
-            onChange={(
-              newValue: Date | null,
-              context: PickerChangeHandlerContext<DateValidationError>
-            ) => {
-              if (!context.validationError) {
-                setExpense({ ...expense, date: newValue || new Date() })
-              }
-            }}
+            onChange={(newDate) =>
+              setExpense({ ...expense, date: newDate || new Date() })
+            }
             slotProps={{
               textField: {
                 helperText: 'MM / DD / YYYY',

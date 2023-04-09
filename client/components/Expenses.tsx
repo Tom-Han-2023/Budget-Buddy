@@ -9,9 +9,15 @@ import {
   GridToolbar,
   GridColDef,
   GridRowsProp,
+  GridToolbarContainer,
+  GridToolbarExport,
+  GridToolbarColumnsButton,
+  GridToolbarDensitySelector,
+  GridToolbarFilterButton,
 } from '@mui/x-data-grid'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
 const StyledGridOverlay = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -83,6 +89,23 @@ function CustomNoRowsOverlay() {
   )
 }
 
+function CustomToolbar() {
+  return (
+    <>
+      <div style={{ display: 'flex' }}>
+        <h1>Expenses</h1>
+        <AddExpenses />
+      </div>
+      <GridToolbarContainer>
+        <GridToolbarColumnsButton />
+        <GridToolbarDensitySelector />
+        <GridToolbarFilterButton />
+        <GridToolbarExport />
+      </GridToolbarContainer>
+    </>
+  )
+}
+
 const Expenses = () => {
   const expenses = useAppSelector((state) => state.expenses)
   const accessToken = useAppSelector((state) => state.token)
@@ -102,25 +125,37 @@ const Expenses = () => {
     { field: 'amount', headerName: 'Amount', flex: 1 },
     {
       field: 'update',
-      headerName: 'Update',
-      flex: 1,
+      headerName: '',
+
+      width: 50,
       renderCell: (params) => (
-        <Button
-          variant="contained"
-          onClick={() => handleUpdateClick(params.row)}
-        >
-          Update
-        </Button>
+        <UpdateExpense
+          expenseAmount={params.row.amount}
+          budget_id={params.row.budget_id}
+          expenseId={params.row.id}
+          date={params.row.datefromDB}
+          category={params.row.description}
+          budgetName={params.row.budgetName}
+        />
       ),
+    },
+    {
+      field: 'delete',
+      headerName: '',
+
+      width: 50,
+      renderCell: (params) => <DeleteExpense expenseId={params.row.id} />,
     },
   ]
 
   const rows: GridRowsProp = expenses.data.map((expense) => ({
     id: expense.id,
     description: expense.category,
-    amount: `$${expense.amount}`,
+    amount: expense.amount,
     date: new Date(expense.date).toLocaleDateString(),
+    datefromDB: expense.date,
     budgetName: expense.budgetName,
+    budget_id: expense.budget_id,
   }))
 
   if (expenses.isLoading) {
@@ -143,34 +178,10 @@ const Expenses = () => {
         className="datagrid"
         autoHeight
         slots={{
-          toolbar: GridToolbar,
+          toolbar: CustomToolbar,
           noRowsOverlay: CustomNoRowsOverlay,
         }}
       />
-      <AddExpenses />
-
-      {/* <div>
-        {expenses.data.map((expense) => {
-          return (
-            <div key={expense.id}>
-              <h2>{expense.category}</h2>
-              <p>Amount: ${expense.amount}</p>
-              <p>Date: {new Date(expense.date).toLocaleDateString()}</p>
-              <p>Budget Category: {expense.budgetName}</p>
-              <DeleteExpense expenseId={expense.id} />
-              <UpdateExpense
-                expenseAmount={expense.amount}
-                budget_id={expense.budget_id}
-                expenseId={expense.id}
-                date={expense.date}
-                category={expense.category}
-                budgetName={expense.budgetName}
-              />
-            </div>
-          )
-        })}
-      </div>
-     */}
     </>
   )
 }

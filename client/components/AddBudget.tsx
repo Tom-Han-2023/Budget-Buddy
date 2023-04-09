@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 import { addBudget } from '../actions/budgets'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import { DatePicker } from '@mui/x-date-pickers'
+import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp'
 
 export default function AddBudget() {
   const dispatch = useAppDispatch()
   const accessToken = useAppSelector((state) => state.token)
   const { year, month } = useAppSelector((state) => state.yearMonth)
+  const [open, setOpen] = useState<boolean>(false)
 
   const [budget, setBudget] = useState({
     name: '',
@@ -29,10 +31,19 @@ export default function AddBudget() {
     event.preventDefault()
     dispatch(addBudget(budget, accessToken.accessToken as string))
     setBudget({ name: '', amount: 0, date: new Date(`${year}-${month}-01`) })
+    handleClose()
+  }
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
   }
 
   return (
     <>
+      
       <form onSubmit={handleSubmit}>
         <label htmlFor="budget-name">Name of new Budget:</label>
         <input

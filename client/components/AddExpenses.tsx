@@ -3,12 +3,25 @@ import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import { DatePicker } from '@mui/x-date-pickers'
 import { addExpense } from '../actions/expenses'
+import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
 
 export default function AddExpenses() {
   const dispatch = useAppDispatch()
   const { accessToken } = useAppSelector((state) => state.token)
   const budgets = useAppSelector((state) => state.budgets)
   const { year, month } = useAppSelector((state) => state.yearMonth)
+  const [open, setOpen] = useState<boolean>(false)
 
   const [expense, setExpense] = useState({
     category: '',
@@ -29,9 +42,7 @@ export default function AddExpenses() {
     })
   }, [year, month])
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-
+  function handleSubmit() {
     const budget = budgets.data.find(
       (budget) => budget.id === expense.budget_id
     )
@@ -49,6 +60,14 @@ export default function AddExpenses() {
       date: new Date(`${year}-${month}-01`),
       budgetName: '',
     })
+    handleClose()
+  }
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
   }
 
   if (budgets.isLoading) {
@@ -61,75 +80,96 @@ export default function AddExpenses() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="expense-description">New Expense:</label>
-        <input
-          required
-          type="text"
-          id="expense-description"
-          value={expense.category}
-          onChange={(e) => {
-            setExpense({ ...expense, category: e.target.value })
-          }}
-        />
-        <label htmlFor="expense-amount">
-          Amount to Allocated to this budget
-        </label>
-        <input
-          required
-          type="number"
-          id="expense-amount"
-          min={0}
-          value={expense.amount}
-          onChange={(e) => {
-            const value = e.target.value
-            if (value === '') {
-              setExpense({ ...expense, amount: 0 })
-            } else {
-              const amount = Number(value)
-              setExpense({ ...expense, amount })
-            }
-          }}
-        />
-        <DatePicker
-          label={'expense-date'}
-          value={expense.date}
-          onChange={(newDate) => {
-            setExpense({ ...expense, date: newDate || new Date() })
-          }}
-          slotProps={{
-            textField: {
-              helperText: 'MM / DD / YYYY',
-            },
-          }}
-          minDate={new Date(`${year}-${month}-01`)}
-          maxDate={
-            new Date(
-              new Date(`${year}-${month}-01`).getFullYear(),
-              new Date(`${year}-${month}-01`).getMonth() + 1,
-              0
-            )
-          }
-        />
-        <label htmlFor="expense-budget">Budget:</label>
-        <select
-          id="expense-budget"
-          value={expense.budget_id === null ? '' : expense.budget_id}
-          onChange={(e) => {
-            const value = e.target.value
-            const budgetId = value === '' ? null : Number(value)
-            setExpense({ ...expense, budget_id: budgetId })
-          }}
-        >
-          <option value="">Uncategorized</option>
-          {budgets.data.map((budget) => (
-            <option key={budget.id} value={budget.id}>
-              {budget.name}
-            </option>
-          ))}
-        </select>
-        <button type="submit">Add Expense</button>
-      </form>
+      <AddCircleSharpIcon style={{ padding: 25 }} onClick={handleClickOpen} />
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Add Expense</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Fill in the new details of the Expense
+          </DialogContentText>
+          <TextField
+            style={{ marginTop: 30 }}
+            required
+            margin="dense"
+            id="expense-description"
+            label="Expense Description"
+            type="text"
+            fullWidth
+            value={expense.category}
+            onChange={(e) => {
+              setExpense({ ...expense, category: e.target.value })
+            }}
+          />
+          <TextField
+            required
+            margin="dense"
+            id="expense-amount"
+            label="Expense Amount"
+            type="number"
+            fullWidth
+            value={expense.amount}
+            onChange={(e) => {
+              const value = e.target.value
+              if (value === '') {
+                setExpense({ ...expense, amount: 0 })
+              } else {
+                const amount = Number(value)
+                setExpense({ ...expense, amount })
+              }
+            }}
+            variant="standard"
+          />
+          <div style={{ marginTop: 30 }}>
+            <FormControl fullWidth required sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="budget-category">Budget Category</InputLabel>
+              <Select
+                labelId="budget-category"
+                id="budget-category"
+                value={expense.budget_id === null ? '' : expense.budget_id}
+                label="Budget Category"
+                onChange={(e) => {
+                  const value = e.target.value
+                  const budgetId = value === '' ? null : Number(value)
+                  setExpense({ ...expense, budget_id: budgetId })
+                }}
+              >
+                <MenuItem value="">Uncategorized</MenuItem>
+                {budgets.data.map((budget) => (
+                  <MenuItem value={budget.id} key={budget.id}>
+                    {budget.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+          <div style={{ marginTop: 30 }}>
+            <DatePicker
+              label={'expense-date'}
+              value={expense.date}
+              onChange={(newDate) =>
+                setExpense({ ...expense, date: newDate || new Date() })
+              }
+              slotProps={{
+                textField: {
+                  helperText: 'MM / DD / YYYY',
+                },
+              }}
+              minDate={new Date(`${year}-${month}-01`)}
+              maxDate={
+                new Date(
+                  new Date(`${year}-${month}-01`).getFullYear(),
+                  new Date(`${year}-${month}-01`).getMonth() + 1,
+                  0
+                )
+              }
+            />
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSubmit}>Submit</Button>
+        </DialogActions>
+      </Dialog>
     </>
   )
 }

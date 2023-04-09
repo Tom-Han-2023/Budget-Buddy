@@ -86,6 +86,7 @@
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
+    "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.11.16",
     "@mui/x-data-grid": "^6.0.4",
     "@mui/x-date-pickers": "^6.0.4",

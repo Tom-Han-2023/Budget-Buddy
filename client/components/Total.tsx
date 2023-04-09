@@ -1,6 +1,7 @@
 import { Budget } from '../../Models/budget'
 import { Expenses } from '../../Models/expenses'
 import { useAppSelector } from '../hooks'
+import Typography from '@mui/material/Typography'
 
 function Total() {
   const budgets = useAppSelector((state) => state.budgets)
@@ -24,9 +25,15 @@ function Total() {
 
   return (
     <div>
-      <h2>Budget Summary</h2>
-      <p>Total Budgeted: ${totalBudgeted}</p>
-      <p>Total Spent: ${totalSpent}</p>
+      <Typography variant="h5" component="h2" gutterBottom>
+        <h2>Budget Summary</h2>
+      </Typography>
+      <Typography variant="body1" gutterBottom>
+        <p>Total Budgeted: ${totalBudgeted}</p>
+      </Typography>
+      <Typography variant="body1" gutterBottom>
+        <p>Total Spent: ${totalSpent}</p>
+      </Typography>
     </div>
   )
 }

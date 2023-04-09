@@ -6,7 +6,6 @@ import DeleteExpense from './DeleteExpense'
 import UpdateExpense from './UpdateExpense'
 import {
   DataGrid,
-  GridToolbar,
   GridColDef,
   GridRowsProp,
   GridToolbarContainer,
@@ -17,7 +16,6 @@ import {
 } from '@mui/x-data-grid'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
 const StyledGridOverlay = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -92,7 +90,7 @@ function CustomNoRowsOverlay() {
 function CustomToolbar() {
   return (
     <>
-      <div style={{ display: 'flex' }}>
+      <div style={{ marginLeft: 20, display: 'flex' }}>
         <h1>Expenses</h1>
         <AddExpenses />
       </div>
@@ -171,7 +169,7 @@ const Expenses = () => {
   }
 
   return (
-    <>
+    <div style={{ margin: 40 }}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -182,7 +180,7 @@ const Expenses = () => {
           noRowsOverlay: CustomNoRowsOverlay,
         }}
       />
-    </>
+    </div>
   )
 }
 

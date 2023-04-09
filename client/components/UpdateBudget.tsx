@@ -1,6 +1,14 @@
 import { useState } from 'react'
 import { updateBudget } from '../actions/budgets'
 import { useAppDispatch, useAppSelector } from '../hooks'
+import EditSharpIcon from '@mui/icons-material/EditSharp'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
 
 interface Prop {
   budgetid: number
@@ -15,55 +23,71 @@ function UpdateBudget(props: Prop) {
     name: props.budgetName,
     amount: props.budgetAmount,
   })
-  const [clicked, setClicked] = useState<boolean>(false)
+  const [open, setOpen] = useState<boolean>(false)
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+  function handleSubmit() {
     dispatch(
       updateBudget(props.budgetid, accessToken.accessToken as string, budget)
     )
-    setClicked(false)
+    handleClose()
+  }
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
   }
 
   return (
     <>
-      <button onClick={() => setClicked(true)}>Edit Budget</button>
-      {clicked && (
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="new-budget-name">New Budget Name:</label>
-          <input
-            required
-            type="text"
-            name="new-budget-name"
-            id="new-budget-name"
-            value={budget.name}
-            onChange={(e) => {
-              setBudget({ ...budget, name: e.target.value })
-            }}
-          />
-          <label htmlFor="new-budget-amount">
-            New amount allocated to this budget
-          </label>
-          <input
-            required
-            type="number"
-            name="new-budget-amount"
-            id="new-budget-amount"
-            min={0}
-            value={budget.amount}
-            onChange={(e) => {
-              const value = e.target.value
-              if (value === '') {
-                setBudget({ ...budget, amount: 0 })
-              } else {
-                const amount = Number(value)
-                setBudget({ ...budget, amount })
-              }
-            }}
-          />
-          <button type="submit">Update Budget</button>
-        </form>
-      )}
+      <EditSharpIcon onClick={handleClickOpen} />
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Add Expense</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Fill in the new details for the Budget
+          </DialogContentText>
+          <form>
+            <TextField
+              style={{ marginTop: 30 }}
+              required
+              margin="dense"
+              id="new-budget-name"
+              label="New Budget Name"
+              type="text"
+              fullWidth
+              value={budget.name}
+              onChange={(e) => {
+                setBudget({ ...budget, name: e.target.value })
+              }}
+            />
+            <TextField
+              required
+              margin="dense"
+              id="new-budget-amount"
+              label="New Budget Amount"
+              type="number"
+              fullWidth
+              value={budget.amount}
+              onChange={(e) => {
+                const value = e.target.value
+                if (value === '') {
+                  setBudget({ ...budget, amount: 0 })
+                } else {
+                  const amount = Number(value)
+                  setBudget({ ...budget, amount })
+                }
+              }}
+              variant="standard"
+            />
+          </form>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSubmit}>Submit</Button>
+        </DialogActions>
+      </Dialog>
     </>
   )
 }

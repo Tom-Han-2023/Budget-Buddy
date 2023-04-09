@@ -1,5 +1,6 @@
 import { removeBudget } from '../actions/budgets'
 import { useAppDispatch, useAppSelector } from '../hooks'
+import DeleteSharpIcon from '@mui/icons-material/DeleteSharp'
 
 interface Prop {
   budgetid: number
@@ -15,13 +16,11 @@ function DeleteBudget(prop: Prop) {
 
   return (
     <>
-      <button
+      <DeleteSharpIcon
         onClick={() =>
           handleClick(prop.budgetid, accessToken.accessToken as string)
         }
-      >
-        Delete Budget
-      </button>
+      />
     </>
   )
 }

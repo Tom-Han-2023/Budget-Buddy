@@ -3,6 +3,13 @@ import { addBudget } from '../actions/budgets'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import { DatePicker } from '@mui/x-date-pickers'
 import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
 
 export default function AddBudget() {
   const dispatch = useAppDispatch()
@@ -27,8 +34,7 @@ export default function AddBudget() {
     })
   }, [year, month])
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+  function handleSubmit() {
     dispatch(addBudget(budget, accessToken.accessToken as string))
     setBudget({ name: '', amount: 0, date: new Date(`${year}-${month}-01`) })
     handleClose()
@@ -43,56 +49,71 @@ export default function AddBudget() {
 
   return (
     <>
-      
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="budget-name">Name of new Budget:</label>
-        <input
-          required
-          type="text"
-          id="budget-name"
-          value={budget.name}
-          onChange={(e) => {
-            setBudget({ ...budget, name: e.target.value })
-          }}
-        />
-        <label htmlFor="budget-amount">
-          Amount to Allocated to this budget
-        </label>
-        <input
-          required
-          type="number"
-          id="budget-amount"
-          min={0}
-          value={budget.amount}
-          onChange={(e) => {
-            const value = e.target.value
-            if (value === '') {
-              setBudget({ ...budget, amount: 0 })
-            } else {
-              const amount = Number(value)
-              setBudget({ ...budget, amount })
-            }
-          }}
-        />
-
-        <DatePicker
-          label={'The month, this budget belongs to'}
-          views={['year', 'month']}
-          value={budget.date}
-          onChange={(newDate) => {
-            setBudget({ ...budget, date: newDate || new Date() })
-          }}
-          minDate={new Date(`${year}-${month}-01`)}
-          maxDate={
-            new Date(
-              new Date(`${year}-${month}-01`).getFullYear(),
-              new Date(`${year}-${month}-01`).getMonth() + 1,
-              0
-            )
-          }
-        />
-        <button type="submit">Add Budget</button>
-      </form>
+      <AddCircleSharpIcon style={{ padding: 25 }} onClick={handleClickOpen} />
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Add Expense</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Fill in the details for the new Budget
+          </DialogContentText>
+          <form>
+            <TextField
+              style={{ marginTop: 30 }}
+              required
+              margin="dense"
+              id="budget-name"
+              label="Budget Name"
+              type="text"
+              fullWidth
+              value={budget.name}
+              onChange={(e) => {
+                setBudget({ ...budget, name: e.target.value })
+              }}
+            />
+            <TextField
+              required
+              margin="dense"
+              id="budget-amount"
+              label="Budget Amount"
+              type="number"
+              fullWidth
+              value={budget.amount}
+              onChange={(e) => {
+                const value = e.target.value
+                if (value === '') {
+                  setBudget({ ...budget, amount: 0 })
+                } else {
+                  const amount = Number(value)
+                  setBudget({ ...budget, amount })
+                }
+              }}
+              variant="standard"
+            />
+            <div style={{ marginTop: 30 }}>
+              <DatePicker
+                label={'The month, this budget belongs to'}
+                views={['year', 'month']}
+                value={budget.date}
+                onChange={(newDate) =>
+                  setBudget({ ...budget, date: newDate || new Date() })
+                }
+                minDate={new Date(`${year}-${month}-01`)}
+                maxDate={
+                  new Date(
+                    new Date(`${year}-${month}-01`).getFullYear(),
+                    new Date(`${year}-${month}-01`).getMonth() + 1,
+                    0
+                  )
+                }
+              />
+            </div>
+          </form>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSubmit}>Submit</Button>
+        </DialogActions>
+      </Dialog>
     </>
   )
 }

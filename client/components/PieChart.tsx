@@ -24,16 +24,14 @@ function PieChart() {
       value: totalSpending,
     }
   })
- 
-
-  
+  console.log(data)
 
   const chartData = {
-    labels: data.map((budget) => budget.label),
+    labels: data.length > 0 ? data.map((budget) => budget.label) : ['None'],
     datasets: [
       {
         label: 'Total Spending by Budget $',
-        data: data.map((budget) => budget.value),
+        data: data.length > 0 ? data.map((budget) => budget.value) : [1],
         backgroundColor: [
           'rgba(255, 99, 132, 0.6)',
           'rgba(54, 162, 235, 0.6)',
@@ -66,7 +64,11 @@ function PieChart() {
       },
     ],
   }
-  return <Doughnut data={chartData} redraw={true} />
+  return (
+    <div style={{ width: 400 }}>
+      <Doughnut data={chartData} redraw={true} />
+    </div>
+  )
 }
 
 export default PieChart

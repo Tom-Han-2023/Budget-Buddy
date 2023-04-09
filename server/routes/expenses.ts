@@ -4,7 +4,6 @@ import {
   addExpenses,
   deleteExpenses,
   getAllExpenses,
-  getExpenseById,
   updateExpense,
 } from '../db/db'
 
@@ -60,19 +59,6 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
   }
 })
 
-// /api/v1/expenses/:id'
-router.get('/:expenseid', checkJwt, async (req: JwtRequest, res) => {
-  try {
-    const expenseId = parseInt(req.params.expenseid)
-    const expense = await getExpenseById(expenseId)
-    res.json(expense)
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({
-      error: 'There was an error trying to get the expense :(',
-    })
-  }
-})
 
 // /api/v1/expenses/:id'
 router.patch('/:expenseid', checkJwt, async (req: JwtRequest, res) => {

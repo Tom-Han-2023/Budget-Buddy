@@ -88,12 +88,6 @@ export async function getAllExpenses(
     .select('expenses.*', 'budgets.name as budgetName')
 }
 
-export async function getAllExpensesByCategory(
-  budgetId: number,
-  db = connection
-): Promise<Expenses[]> {
-  return db('expenses').where({ budget_id: budgetId }).select()
-}
 
 export async function updateExpense(
   id: number,
@@ -132,19 +126,4 @@ export async function addExpenses(
     .returning(['id'])
 }
 
-export async function getBudgetById(id: number, db = connection) {
-  return db('budgets').where({ id }).select().first()
-}
-export async function getExpenseById(id: number, db = connection) {
-  return db('expenses').where({ id }).select().first()
-}
-export async function getTotalExpensesByBudgetId(
-  budgetId: number,
-  db = connection
-): Promise<number> {
-  const result = await db('expenses')
-    .where({ budget_id: budgetId })
-    .sum('amount as totalAmount')
-    .first()
-  return result?.totalAmount || 0
-}
+

@@ -1,14 +1,14 @@
 import request from 'superagent'
-import { Budget, NewBudget, UpdateBudget } from '../../Models/budget'
+import { Expenses, NewExpense } from '../../Models/expenses'
 
-export async function getBudgets(
+export async function getExpenses(
   token: string,
   year: string,
   month: string
-): Promise<Budget[]> {
+): Promise<Expenses[]> {
   try {
     const res = await request
-      .get(`/api/v1/budgets`)
+      .get(`/api/v1/expenses`)
       .set('Authorization', `Bearer ${token}`)
       .query({ year, month })
     return res.body
@@ -18,15 +18,15 @@ export async function getBudgets(
   }
 }
 
-export async function addBudgetToUserId(
-  newBudget: NewBudget,
+export async function addExpenseToUserId(
+  newExpense: NewExpense,
   token: string
-): Promise<Budget> {
+): Promise<Expenses> {
   try {
     const res = await request
-      .post(`/api/v1/budgets`)
+      .post(`/api/v1/expenses/`)
       .set('Authorization', `Bearer ${token}`)
-      .send({ ...newBudget })
+      .send({ ...newExpense })
     return res.body
   } catch (err) {
     console.error(err)
@@ -34,13 +34,10 @@ export async function addBudgetToUserId(
   }
 }
 
-export async function deleteBudget(
-  budgetId: number,
-  token: string
-): Promise<number> {
+export async function deleteExpense(expenseId: number, token: string) {
   try {
     const res = await request
-      .delete(`/api/v1/budgets/${budgetId}`)
+      .delete(`/api/v1/expenses/${expenseId}`)
       .set('Authorization', `Bearer ${token}`)
     return res.body
   } catch (err) {
@@ -49,15 +46,15 @@ export async function deleteBudget(
   }
 }
 
-export async function updateBudgetAPI(
-  budgetId: number,
+export async function updateExpenseAPI(
+  expenseId: number,
   token: string,
-  budgetDetail: UpdateBudget
-): Promise<Budget> {
+  expenseDetail: NewExpense
+): Promise<Expenses> {
   try {
     const res = await request
-      .patch(`/api/v1/budgets/${budgetId}`)
-      .send({ ...budgetDetail })
+      .patch(`/api/v1/expenses/${expenseId}`)
+      .send({ ...expenseDetail })
       .set('Authorization', `Bearer ${token}`)
     return res.body
   } catch (err) {

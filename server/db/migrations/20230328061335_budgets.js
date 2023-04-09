@@ -7,7 +7,7 @@ exports.up = function (knex) {
     table.increments('id').primary()
     table.string('name').notNullable()
     table.decimal('amount', 12, 2).notNullable()
-    table.integer('user_id').notNullable()
+    table.string('user_id').notNullable()
     table.date('date').notNullable()
   })
 }

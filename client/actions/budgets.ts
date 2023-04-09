@@ -61,10 +61,14 @@ export function deletedBudget(budgetId: number): BudgetAction {
   }
 }
 
-export function fetchBudgets(token: string): ThunkAction {
+export function fetchBudgets(
+  token: string,
+  year: string,
+  month: string
+): ThunkAction {
   return (dispatch) => {
     dispatch(requestBudgets())
-    return getBudgets(token)
+    return getBudgets(token, year, month)
       .then((budgets) => {
         dispatch(receiveBudgets(budgets))
       })

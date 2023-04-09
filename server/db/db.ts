@@ -1,25 +1,46 @@
-import { Budget } from '../../Models/budget'
+import { Budget, UpdateBudget } from '../../Models/budget'
 import { Expenses } from '../../Models/expenses'
 import connection from './connection'
 
 export function getAllBudgets(
-  userId: string,
+  userId: string | number,
+  year: string,
+  month: string,
   db = connection
 ): Promise<Budget[]> {
-  return db('budgets').where({ user_id: userId }).select()
+  const monthNumber = new Date(Date.parse(`${month} 1, ${year}`)).getMonth()
+
+  const startDate = new Date(parseInt(year), monthNumber, 1)
+  const endDate = new Date(parseInt(year), monthNumber + 1, 1)
+  endDate.setHours(-1, 0, 0, 0)
+
+  const timezoneOffset = startDate.getTimezoneOffset() * 60 * 1000 // convert minutes to milliseconds
+  const startDateLocal = new Date(
+    startDate.getTime() - timezoneOffset
+  ).toISOString()
+  const endDateLocal = new Date(
+    endDate.getTime() - timezoneOffset
+  ).toISOString()
+
+  return db('budgets')
+    .where('user_id', userId)
+    .whereBetween('date', [startDateLocal, endDateLocal])
+    .select('id', 'user_id', 'name', 'amount')
 }
 
 export async function addBudgets(
   newBudget: Partial<Budget>,
-  userId: string,
+  userId: string | number,
   db = connection
-): Promise<number[]> {
-  return db('budgets').insert({
-    user_id: userId,
-    name: newBudget.name,
-    amount: newBudget.amount,
-    date: newBudget.date,
-  })
+): Promise<{ id: number }[]> {
+  return db('budgets')
+    .insert({
+      user_id: userId,
+      name: newBudget.name,
+      amount: newBudget.amount,
+      date: newBudget.date,
+    })
+    .returning(['id'])
 }
 
 export async function deleteBudget(
@@ -31,24 +52,40 @@ export async function deleteBudget(
 
 export async function updateBudget(
   id: number,
-  newBudgetDetail: Partial<Budget>,
+  newBudgetDetail: UpdateBudget,
   db = connection
-): Promise<Budget> {
-  const [updatedBudget] = await db('budgets')
-    .where({ id })
-    .update({
-      name: newBudgetDetail.name,
-      amount: newBudgetDetail.amount,
-    })
-    .returning('*')
-  return updatedBudget
+) {
+  return db('budgets').where({ id }).update({
+    name: newBudgetDetail.name,
+    amount: newBudgetDetail.amount,
+  })
 }
 
 export async function getAllExpenses(
-  userId: number,
+  userId: number | string,
+  year: string,
+  month: string,
   db = connection
 ): Promise<Expenses[]> {
-  return db('expenses').where({ user_id: userId }).select()
+  const monthNumber = new Date(Date.parse(`${month} 1, ${year}`)).getMonth()
+
+  const startDate = new Date(parseInt(year), monthNumber, 1)
+  const endDate = new Date(parseInt(year), monthNumber + 1, 1)
+  endDate.setHours(-1, 0, 0, 0)
+
+  const timezoneOffset = startDate.getTimezoneOffset() * 60 * 1000 // convert minutes to milliseconds
+  const startDateLocal = new Date(
+    startDate.getTime() - timezoneOffset
+  ).toISOString()
+  const endDateLocal = new Date(
+    endDate.getTime() - timezoneOffset
+  ).toISOString()
+
+  return db('expenses')
+    .leftJoin('budgets', 'expenses.budget_id', 'budgets.id')  
+    .where({ 'expenses.user_id': userId })
+    .whereBetween('expenses.date', [startDateLocal, endDateLocal])
+    .select('expenses.*', 'budgets.name as budgetName')
 }
 
 export async function getAllExpensesByCategory(
@@ -80,18 +117,19 @@ export async function deleteExpenses(
 }
 
 export async function addExpenses(
-  userId: number,
-  budgetId: number,
+  userId: number | string,
   newExpense: Partial<Expenses>,
   db = connection
 ) {
-  return db('expenses').insert({
-    user_id: userId,
-    category: newExpense.category,
-    amount: newExpense.amount,
-    date: newExpense.date,
-    budget_id: budgetId,
-  })
+  return db('expenses')
+    .insert({
+      user_id: userId,
+      category: newExpense.category,
+      amount: newExpense.amount,
+      date: newExpense.date,
+      budget_id: newExpense.budget_id,
+    })
+    .returning(['id'])
 }
 
 export async function getBudgetById(id: number, db = connection) {

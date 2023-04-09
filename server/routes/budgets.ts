@@ -2,7 +2,6 @@ import express from 'express'
 import checkJwt, { JwtRequest } from '../auth0'
 import {
   addBudgets,
-  addExpenses,
   deleteBudget,
   getAllBudgets,
   getAllExpensesByCategory,
@@ -17,11 +16,13 @@ const router = express.Router()
 router.get('/', checkJwt, async (req: JwtRequest, res) => {
   try {
     const userId = req.auth?.sub
-    if (!userId) {
+
+    const { year, month } = req.query
+    if (!userId || !year || !month) {
       console.error('No userId')
       return res.status(401).send('Unauthorized')
     }
-    const budgets = await getAllBudgets(userId)
+    const budgets = await getAllBudgets(userId, year as string, month as string)
     res.json(budgets)
   } catch (error) {
     console.log(error)
@@ -40,8 +41,8 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
       console.error('No userId')
       return res.status(401).send('Unauthorized')
     }
-    const [newBudgetId] = await addBudgets(newBudget, userId)
-    res.json({ ...req.body, user_id: userId, id: newBudgetId })
+    const [{ id }] = await addBudgets(newBudget, userId)
+    res.json({ id, user_id: userId, ...req.body })
   } catch (error) {
     console.log(error)
     res.status(500).json({
@@ -75,8 +76,8 @@ router.patch('/:id', checkJwt, async (req: JwtRequest, res) => {
     }
     const budgetId = parseInt(req.params.id)
     const newBudgetDetail = { ...req.body }
-    const updatedBudget = await updateBudget(budgetId, newBudgetDetail)
-    res.json(updatedBudget)
+    await updateBudget(budgetId, newBudgetDetail)
+    res.json({ id: budgetId, user_id: userId, ...req.body })
   } catch (error) {
     console.log(error)
     res.status(500).json({
@@ -109,20 +110,6 @@ router.get('/:budgetId/expenses', async (req, res) => {
     console.log(error)
     res.status(500).json({
       error: 'There was an error trying to get all expenses under budget :(',
-    })
-  }
-})
-// /api/v1/budgets/:budgetId/expenses
-router.post('/:budgetId/expenses', async (req, res) => {
-  try {
-    const budgetId = parseInt(req.params.budgetId)
-    const newExpense = { ...req.body }
-    await addExpenses(userId, budgetId, newExpense)
-    res.status(200).json('ok')
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({
-      error: 'There was an error trying to delete the post :(',
     })
   }
 })

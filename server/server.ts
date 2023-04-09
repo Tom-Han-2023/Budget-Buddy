@@ -1,7 +1,7 @@
 import { join } from 'node:path'
 import express from 'express'
 import budgets from './routes/budgets'
-import spendings from './routes/spending'
+import expenses from './routes/expenses'
 
 
 const server = express()
@@ -9,7 +9,7 @@ const server = express()
 server.use(express.json())
 server.use(express.static(join(__dirname, 'public')))
 server.use('/api/v1/budgets', budgets)
-server.use('/api/v1/spendings', spendings)
+server.use('/api/v1/expenses', expenses)
 
 // server.use(checkJwt)
 

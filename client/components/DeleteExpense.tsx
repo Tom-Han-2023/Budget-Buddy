@@ -1,28 +1,28 @@
-import { removeBudget } from '../actions/budgets'
+import { removeExpense } from '../actions/expenses'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import DeleteSharpIcon from '@mui/icons-material/DeleteSharp'
 
 interface Prop {
-  budgetid: number
+  expenseId: number
 }
 
-function DeleteBudget(prop: Prop) {
+const DeleteExpense = (prop: Prop) => {
   const dispatch = useAppDispatch()
   const accessToken = useAppSelector((state) => state.token)
 
-  function handleClick(budgetid: number, token: string) {
-    dispatch(removeBudget(budgetid, token))
+  function handleClick(expenseId: number, token: string) {
+    dispatch(removeExpense(expenseId, token))
   }
 
   return (
     <>
       <DeleteSharpIcon
         onClick={() =>
-          handleClick(prop.budgetid, accessToken.accessToken as string)
+          handleClick(prop.expenseId, accessToken.accessToken as string)
         }
       />
     </>
   )
 }
 
-export default DeleteBudget
+export default DeleteExpense

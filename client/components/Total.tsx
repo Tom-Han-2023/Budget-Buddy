@@ -29,10 +29,14 @@ function Total() {
         <h2>Budget Summary</h2>
       </Typography>
       <Typography variant="body1" gutterBottom>
-        <p>Total Budgeted: ${totalBudgeted}</p>
+        <p>
+          Total Budgeted: <strong>${totalBudgeted} </strong>
+        </p>
       </Typography>
       <Typography variant="body1" gutterBottom>
-        <p>Total Spent: ${totalSpent}</p>
+        <p>
+          Total Spent: <strong>${totalSpent} </strong>
+        </p>
       </Typography>
     </div>
   )

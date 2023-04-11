@@ -1,4 +1,5 @@
 import express from 'express'
+import { Month, Year } from '../../Models/monthYear'
 import checkJwt, { JwtRequest } from '../auth0'
 import {
   addExpenses,
@@ -21,11 +22,7 @@ router.get('/', checkJwt, async (req: JwtRequest, res) => {
       return res.status(401).send('Unauthorized')
     }
 
-    const expenses = await getAllExpenses(
-      userId,
-      year as string,
-      month as string
-    )
+    const expenses = await getAllExpenses(userId, year as Year, month as Month)
     const AllExpenses = expenses.map((expense) => {
       return expense.budgetName
         ? expense
@@ -58,7 +55,6 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
     })
   }
 })
-
 
 // /api/v1/expenses/:id'
 router.patch('/:expenseid', checkJwt, async (req: JwtRequest, res) => {

@@ -1,4 +1,5 @@
 import express from 'express'
+import { Month, Year } from '../../Models/monthYear'
 import checkJwt, { JwtRequest } from '../auth0'
 import { addBudgets, deleteBudget, getAllBudgets, updateBudget } from '../db/db'
 
@@ -14,7 +15,7 @@ router.get('/', checkJwt, async (req: JwtRequest, res) => {
       console.error('No userId')
       return res.status(401).send('Unauthorized')
     }
-    const budgets = await getAllBudgets(userId, year as string, month as string)
+    const budgets = await getAllBudgets(userId, year as Year, month as Month)
     res.json(budgets)
   } catch (error) {
     console.log(error)

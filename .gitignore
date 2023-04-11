@@ -3,3 +3,5 @@ static
 npm-debug.log
 bundle.*
 coverage/*
+*.sqlite3
+*.log

@@ -10,7 +10,7 @@ router.get('/', checkJwt, async (req: JwtRequest, res) => {
     const userId = req.auth?.sub
 
     const { year, month } = req.query
-    if (!userId || !year || !month) {
+    if (!userId) {
       console.error('No userId')
       return res.status(401).send('Unauthorized')
     }

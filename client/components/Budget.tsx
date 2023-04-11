@@ -8,7 +8,7 @@ import AddBudget from './AddBudget'
 import DeleteBudget from './DeleteBudget'
 import UpdateBudget from './UpdateBudget'
 import { Grid, LinearProgress } from '@mui/material'
-import { grey} from '@mui/material/colors'
+import { grey } from '@mui/material/colors'
 
 function Budget() {
   const { getAccessTokenSilently } = useAuth0()
@@ -81,6 +81,7 @@ function Budget() {
             overflowY: 'auto',
             maxWidth: '40rem',
             maxHeight: '40rem',
+            justifyContent: 'center',
           }}
         >
           <Grid item xs={12}>
@@ -113,6 +114,10 @@ function Budget() {
                   borderRadius: '0.5rem',
                   backgroundColor: 'white',
                   boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.1)',
+                  margin: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 <div key={budget.id}>
@@ -176,6 +181,10 @@ function Budget() {
                   borderRadius: '0.5rem',
                   backgroundColor: 'white',
                   boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.1)',
+                  margin: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 <div>
@@ -207,6 +216,10 @@ function Budget() {
                   borderRadius: '0.5rem',
                   backgroundColor: 'white',
                   boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.1)',
+                  margin: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 <div>
@@ -238,6 +251,10 @@ function Budget() {
                   borderRadius: '0.5rem',
                   backgroundColor: 'white',
                   boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.1)',
+                  margin: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 <div>

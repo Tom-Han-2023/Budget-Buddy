@@ -1,11 +1,12 @@
 import { Budget, UpdateBudget } from '../../Models/budget'
 import { Expenses } from '../../Models/expenses'
+import { Month, Year } from '../../Models/monthYear'
 import connection from './connection'
 
 export function getAllBudgets(
   userId: string | number,
-  year: string,
-  month: string,
+  year: Year,
+  month: Month,
   db = connection
 ): Promise<Budget[]> {
   const monthNumber = new Date(Date.parse(`${month} 1, ${year}`)).getMonth()
@@ -63,8 +64,8 @@ export async function updateBudget(
 
 export async function getAllExpenses(
   userId: number | string,
-  year: string,
-  month: string,
+  year: Year,
+  month: Month,
   db = connection
 ): Promise<Expenses[]> {
   const monthNumber = new Date(Date.parse(`${month} 1, ${year}`)).getMonth()
@@ -82,18 +83,17 @@ export async function getAllExpenses(
   ).toISOString()
 
   return db('expenses')
-    .leftJoin('budgets', 'expenses.budget_id', 'budgets.id')  
+    .leftJoin('budgets', 'expenses.budget_id', 'budgets.id')
     .where({ 'expenses.user_id': userId })
     .whereBetween('expenses.date', [startDateLocal, endDateLocal])
     .select('expenses.*', 'budgets.name as budgetName')
 }
 
-
 export async function updateExpense(
   id: number,
   newExpenseDetails: Partial<Expenses>,
   db = connection
-): Promise<Expenses> {
+) {
   await db('expenses').where({ id }).update({
     category: newExpenseDetails.category,
     amount: newExpenseDetails.amount,
@@ -125,5 +125,3 @@ export async function addExpenses(
     })
     .returning(['id'])
 }
-
-

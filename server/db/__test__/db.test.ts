@@ -2,7 +2,6 @@ const knex = require('knex')
 const config = require('../knexfile')
 const testConnection = knex(config.test)
 
-import exp from 'constants'
 import {
   getAllBudgets,
   addBudgets,

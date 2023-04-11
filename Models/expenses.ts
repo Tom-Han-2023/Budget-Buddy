@@ -1,6 +1,6 @@
 export interface Expenses {
   id: number
-  user_id: number
+  user_id: number | string
   budget_id: number | null
   category: string
   amount: number

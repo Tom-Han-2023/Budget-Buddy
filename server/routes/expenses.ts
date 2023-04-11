@@ -54,7 +54,7 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
   } catch (error) {
     console.log(error)
     res.status(500).json({
-      error: 'There was an error trying to delete the post :(',
+      error: 'There was an error trying to add the new expenses :(',
     })
   }
 })

@@ -5,3 +5,5 @@ bundle.*
 coverage/*
 *.sqlite3
 *.log
+tags
+.DS_Store

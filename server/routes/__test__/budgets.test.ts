@@ -12,12 +12,22 @@ import {
 jest.mock('../../db/db')
 jest.mock('../../auth0')
 
-beforeEach(() => {
-  jest.resetAllMocks()
+afterAll(() => {
+  jest.restoreAllMocks()
 })
+
+
 
 describe('GET /api/v1/budgets', () => {
   it('should return back all the budgets for the user if authorised and correct query has been provided', async () => {
+    jest.mocked(checkJwt).mockImplementation(async (req: JwtRequest, res, next) => {
+      req.auth = {
+        sub: 'auth0|123',
+      }
+      next()
+    })
+    
+    
     const mockBudgets = [
       {
         id: 1,

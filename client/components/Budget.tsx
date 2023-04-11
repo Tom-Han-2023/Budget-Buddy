@@ -8,7 +8,7 @@ import AddBudget from './AddBudget'
 import DeleteBudget from './DeleteBudget'
 import UpdateBudget from './UpdateBudget'
 import { Grid, LinearProgress } from '@mui/material'
-import { grey, green, orange, red } from '@mui/material/colors'
+import { grey } from '@mui/material/colors'
 
 function Budget() {
   const { getAccessTokenSilently } = useAuth0()

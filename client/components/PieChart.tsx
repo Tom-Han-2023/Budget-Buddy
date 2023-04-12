@@ -24,7 +24,6 @@ function PieChart() {
       value: totalSpending,
     }
   })
-  console.log(data)
 
   const chartData = {
     labels: data.length > 0 ? data.map((budget) => budget.label) : ['None'],

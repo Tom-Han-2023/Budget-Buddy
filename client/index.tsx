@@ -19,11 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
           audience: 'https://budgets/api',
         }}
       >
-        <Router>
-          <Provider store={store}>
-            <App />
-          </Provider>
-        </Router>
+        <Provider store={store}>
+          <App />
+        </Provider>
       </Auth0Provider>
     </LocalizationProvider>
   )

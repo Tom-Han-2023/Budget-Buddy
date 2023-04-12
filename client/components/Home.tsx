@@ -5,6 +5,7 @@ import LoginIcon from '@mui/icons-material/Login'
 function Home() {
   const { loginWithRedirect } = useAuth0()
   function handleSignIn() {
+    console.log('being called')
     loginWithRedirect()
   }
 
@@ -42,7 +43,7 @@ function Home() {
           <br />
           whether it is for groceries, entertainment, or rent.
         </p>
-        <p>With Budget Buddy, you can:</p>
+        <h2>With Budget Buddy, you can:</h2>
         <ul>
           <li>Set up multiple budgets for different categories</li>
           <li>Track your spending and stay within your budget</li>
@@ -57,7 +58,7 @@ function Home() {
           variant="outlined"
           startIcon={<LoginIcon />}
         >
-          Get Started
+          Get Started Now!
         </Button>
       </div>
     </>

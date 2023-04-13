@@ -70,7 +70,7 @@ router.delete('/:id', checkJwt, async (req, res) => {
   try {
     const budgetId = parseInt(req.params.id)
     await deleteBudget(budgetId)
-    res.json(budgetId)
+    res.status(200)
   } catch (error) {
     console.log(error)
     res.status(500).json({

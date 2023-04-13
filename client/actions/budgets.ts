@@ -101,7 +101,7 @@ export function addBudget(budget: NewBudget, token: string): ThunkAction {
 export function removeBudget(budgetId: number, token: string): ThunkAction {
   return (dispatch) => {
     return deleteBudget(budgetId, token)
-      .then((budgetId) => {
+      .then(() => {
         dispatch(deletedBudget(budgetId))
       })
       .catch((err) => {

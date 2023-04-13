@@ -34,15 +34,11 @@ export async function addBudgetToUserId(
   }
 }
 
-export async function deleteBudget(
-  budgetId: number,
-  token: string
-): Promise<number> {
+export async function deleteBudget(budgetId: number, token: string) {
   try {
-    const res = await request
+    await request
       .delete(`/api/v1/budgets/${budgetId}`)
       .set('Authorization', `Bearer ${token}`)
-    return res.body
   } catch (err) {
     console.error(err)
     throw err

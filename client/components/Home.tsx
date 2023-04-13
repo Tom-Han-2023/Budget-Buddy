@@ -5,7 +5,6 @@ import LoginIcon from '@mui/icons-material/Login'
 function Home() {
   const { loginWithRedirect } = useAuth0()
   function handleSignIn() {
-    console.log('being called')
     loginWithRedirect()
   }
 

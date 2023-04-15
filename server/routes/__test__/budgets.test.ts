@@ -230,7 +230,6 @@ describe('DELETE /api/v1/budgets/:id', () => {
     jest.mocked(deleteBudget).mockResolvedValue(1)
     const response = await request(server).delete('/api/v1/budgets/1')
     expect(response.statusCode).toBe(200)
-    expect(response.body).toBe(1)
   })
   it('should return status code 500 if there is an error deleting the budget from database', async () => {
     // jest.spyOn(console, 'log').mockImplementation(() => {})

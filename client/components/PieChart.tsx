@@ -1,8 +1,14 @@
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  LinearScale,
+} from 'chart.js'
 import { Doughnut } from 'react-chartjs-2'
 import { useAppSelector } from '../hooks'
 
-ChartJS.register(ArcElement, Tooltip, Legend)
+ChartJS.register(ArcElement, Tooltip, Legend, LinearScale)
 
 function PieChart() {
   const expenses = useAppSelector((state) => state.expenses)

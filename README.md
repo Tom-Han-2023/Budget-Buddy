@@ -1,6 +1,9 @@
 
 # Buddy Budget
 
+
+![app-page](https://user-images.githubusercontent.com/121856196/232280772-6f46530c-f0ac-46b0-a1cc-c8b61400038d.png)
+
 Buddy Budget is a personal finance/budgeting app where you can set budgets for each month and add expenses, and track your spending for the month. You can also look at previous budgets and set future budgets.
 
 ## Technologies Used
@@ -46,7 +49,7 @@ Users can access Buddy Budget through a web browser by visiting the deployed web
 
 Contributions are welcome! Feel free to give ideas about the project or do a pull request.
 
-![app-page](https://user-images.githubusercontent.com/121856196/232280772-6f46530c-f0ac-46b0-a1cc-c8b61400038d.png)
+
 
 
 Thank you for using Buddy Budget!

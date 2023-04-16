@@ -30,6 +30,7 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
   try {
     const newBudget = { ...req.body }
     const userId = req.auth?.sub
+
     if (!userId) {
       console.error('No userId')
       return res.status(401).send('Unauthorized')

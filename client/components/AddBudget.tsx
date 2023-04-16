@@ -36,7 +36,7 @@ export default function AddBudget() {
 
   function handleSubmit() {
     dispatch(addBudget(budget, accessToken.accessToken as string))
-    setBudget({ name: '', amount: 0, date: new Date(`${year}-${month}-01`) })
+    setBudget({ name: '', amount: 0, date: new Date(`${year}-${month}-02`) })
     handleClose()
   }
   const handleClickOpen = () => {
@@ -60,58 +60,56 @@ export default function AddBudget() {
           <DialogContentText>
             Fill in the details for the new Budget
           </DialogContentText>
-          <form>
-            <TextField
-              style={{ marginTop: 30 }}
-              required
-              margin="dense"
-              id="budget-name"
-              label="Budget Name"
-              type="text"
-              fullWidth
-              value={budget.name}
-              onChange={(e) => {
-                setBudget({ ...budget, name: e.target.value })
-              }}
+          <TextField
+            style={{ marginTop: 30 }}
+            required
+            margin="dense"
+            id="budget-name"
+            label="Budget Name"
+            type="text"
+            fullWidth
+            value={budget.name}
+            onChange={(e) => {
+              setBudget({ ...budget, name: e.target.value })
+            }}
+          />
+          <TextField
+            required
+            margin="dense"
+            id="budget-amount"
+            label="Budget Amount"
+            type="number"
+            fullWidth
+            value={budget.amount}
+            onChange={(e) => {
+              const value = e.target.value
+              if (value === '') {
+                setBudget({ ...budget, amount: 0 })
+              } else {
+                const amount = Number(value)
+                setBudget({ ...budget, amount })
+              }
+            }}
+            variant="standard"
+          />
+          <div style={{ marginTop: 30 }}>
+            <DatePicker
+              label={'The month, this budget belongs to'}
+              views={['year', 'month']}
+              value={budget.date}
+              onChange={(newDate) =>
+                setBudget({ ...budget, date: newDate || new Date() })
+              }
+              minDate={new Date(`${year}-${month}-01`)}
+              maxDate={
+                new Date(
+                  new Date(`${year}-${month}-01`).getFullYear(),
+                  new Date(`${year}-${month}-01`).getMonth() + 1,
+                  0
+                )
+              }
             />
-            <TextField
-              required
-              margin="dense"
-              id="budget-amount"
-              label="Budget Amount"
-              type="number"
-              fullWidth
-              value={budget.amount}
-              onChange={(e) => {
-                const value = e.target.value
-                if (value === '') {
-                  setBudget({ ...budget, amount: 0 })
-                } else {
-                  const amount = Number(value)
-                  setBudget({ ...budget, amount })
-                }
-              }}
-              variant="standard"
-            />
-            <div style={{ marginTop: 30 }}>
-              <DatePicker
-                label={'The month, this budget belongs to'}
-                views={['year', 'month']}
-                value={budget.date}
-                onChange={(newDate) =>
-                  setBudget({ ...budget, date: newDate || new Date() })
-                }
-                minDate={new Date(`${year}-${month}-01`)}
-                maxDate={
-                  new Date(
-                    new Date(`${year}-${month}-01`).getFullYear(),
-                    new Date(`${year}-${month}-01`).getMonth() + 1,
-                    0
-                  )
-                }
-              />
-            </div>
-          </form>
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

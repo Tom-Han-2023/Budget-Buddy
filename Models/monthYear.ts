@@ -1,0 +1,15 @@
+export type Month =
+  | 'January'
+  | 'February'
+  | 'March'
+  | 'April'
+  | 'May'
+  | 'June'
+  | 'July'
+  | 'August'
+  | 'September'
+  | 'October'
+  | 'November'
+  | 'December'
+
+export type Year = '2023' | '2024' | '2025'

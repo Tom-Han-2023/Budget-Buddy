@@ -73,11 +73,7 @@ export function fetchBudgets(
         dispatch(receiveBudgets(budgets))
       })
       .catch((err) => {
-        if (err instanceof Error) {
-          dispatch(failureBudgets(err.message))
-        } else {
-          dispatch(failureBudgets('An unknown error occurred'))
-        }
+        dispatch(failureBudgets(err.message))
       })
   }
 }
@@ -89,11 +85,7 @@ export function addBudget(budget: NewBudget, token: string): ThunkAction {
         dispatch(appendBudget(budget))
       })
       .catch((err) => {
-        if (err instanceof Error) {
-          dispatch(failureBudgets(err.message))
-        } else {
-          dispatch(failureBudgets('An unknown error occurred'))
-        }
+        dispatch(failureBudgets(err.message))
       })
   }
 }
@@ -101,15 +93,11 @@ export function addBudget(budget: NewBudget, token: string): ThunkAction {
 export function removeBudget(budgetId: number, token: string): ThunkAction {
   return (dispatch) => {
     return deleteBudget(budgetId, token)
-      .then((budgetId) => {
+      .then(() => {
         dispatch(deletedBudget(budgetId))
       })
       .catch((err) => {
-        if (err instanceof Error) {
-          dispatch(failureBudgets(err.message))
-        } else {
-          dispatch(failureBudgets('An unknown error occurred'))
-        }
+        dispatch(failureBudgets(err.message))
       })
   }
 }
@@ -125,11 +113,7 @@ export function updateBudget(
         dispatch(updatedBudget(budget))
       })
       .catch((err) => {
-        if (err instanceof Error) {
-          dispatch(failureBudgets(err.message))
-        } else {
-          dispatch(failureBudgets('An unknown error occurred'))
-        }
+        dispatch(failureBudgets(err.message))
       })
   }
 }

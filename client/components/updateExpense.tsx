@@ -38,7 +38,6 @@ function UpdateExpense(props: Prop) {
   const [open, setOpen] = useState<boolean>(false)
 
   function handleSubmit() {
-    console.log('submiting')
     const budget = budgets.data.find(
       (budget) => budget.id === expense.budget_id
     )

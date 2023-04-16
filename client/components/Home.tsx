@@ -27,20 +27,26 @@ function Home() {
         >
           Get Started
         </Button>
-        <img src="/Image/app-page.png" alt="Look of App page"></img>
+        <img
+          style={{ width: '50%', marginTop: 50 }}
+          src="/Image/app-page.png"
+          alt="Look of App page"
+        ></img>
         <p>
           Take control of your finances and start achieving your financial goals
           with Budget Buddy.
         </p>
         <p>
-          {`Our app allows you to easily create and manage budgets for all aspects
-          of your life, whether it's for groceries, entertainment, or rent.`}
+          Our app allows you to easily create and manage budgets for all aspects
+          of your life,
+          <br />
+          whether it is for groceries, entertainment, or rent.
         </p>
-        <p>With Budget Buddy, you can:</p>
+        <h2>With Budget Buddy, you can:</h2>
         <ul>
           <li>Set up multiple budgets for different categories</li>
           <li>Track your spending and stay within your budget</li>
-          <li>{`Receive alerts when you're approaching your spending limit`}</li>
+          <li>Receive alerts when you are approaching your spending limit</li>
           <li>
             See your spending history and identify areas where you can save
             money
@@ -51,7 +57,7 @@ function Home() {
           variant="outlined"
           startIcon={<LoginIcon />}
         >
-          Get Started
+          Get Started Now!
         </Button>
       </div>
     </>

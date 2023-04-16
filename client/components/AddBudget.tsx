@@ -49,9 +49,13 @@ export default function AddBudget() {
 
   return (
     <>
-      <AddCircleSharpIcon style={{ padding: 25 }} onClick={handleClickOpen} />
+      <AddCircleSharpIcon
+        data-testid="add-budget-button"
+        style={{ padding: 25 }}
+        onClick={handleClickOpen}
+      />
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add Expense</DialogTitle>
+        <DialogTitle>Add Budget</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Fill in the details for the new Budget

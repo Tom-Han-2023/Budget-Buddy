@@ -22,11 +22,9 @@ function DateSelectForm() {
   return (
     <div style={{ padding: 50 }}>
       <FormControl required sx={{ m: 1, minWidth: 120 }}>
-        <InputLabel htmlFor={'label-for-year'} id={'label-for-year'}>
-          Year
-        </InputLabel>
+        <InputLabel id={'label-for-year'}>Year</InputLabel>
         <Select
-          inputProps={{ id: 'label-for-year' }}
+          // inputProps={{ id: 'label-for-year' }}
           labelId={'label-for-year'}
           value={year}
           id={'category-select'}
@@ -39,9 +37,7 @@ function DateSelectForm() {
         </Select>
       </FormControl>
       <FormControl required sx={{ m: 1, minWidth: 120 }}>
-        <InputLabel htmlFor={'label-for-month'} id="Month">
-          Month
-        </InputLabel>
+        <InputLabel id="label-for-month">Month</InputLabel>
         <Select
           inputProps={{ id: 'label-for-month' }}
           labelId={'label-for-month'}

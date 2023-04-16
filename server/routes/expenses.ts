@@ -1,10 +1,10 @@
 import express from 'express'
+import { Month, Year } from '../../Models/monthYear'
 import checkJwt, { JwtRequest } from '../auth0'
 import {
   addExpenses,
   deleteExpenses,
   getAllExpenses,
-  getExpenseById,
   updateExpense,
 } from '../db/db'
 
@@ -22,11 +22,7 @@ router.get('/', checkJwt, async (req: JwtRequest, res) => {
       return res.status(401).send('Unauthorized')
     }
 
-    const expenses = await getAllExpenses(
-      userId,
-      year as string,
-      month as string
-    )
+    const expenses = await getAllExpenses(userId, year as Year, month as Month)
     const AllExpenses = expenses.map((expense) => {
       return expense.budgetName
         ? expense
@@ -55,21 +51,7 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
   } catch (error) {
     console.log(error)
     res.status(500).json({
-      error: 'There was an error trying to delete the post :(',
-    })
-  }
-})
-
-// /api/v1/expenses/:id'
-router.get('/:expenseid', checkJwt, async (req: JwtRequest, res) => {
-  try {
-    const expenseId = parseInt(req.params.expenseid)
-    const expense = await getExpenseById(expenseId)
-    res.json(expense)
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({
-      error: 'There was an error trying to get the expense :(',
+      error: 'There was an error trying to add the new expenses :(',
     })
   }
 })

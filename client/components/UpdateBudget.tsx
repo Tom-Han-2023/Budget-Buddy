@@ -41,9 +41,12 @@ function UpdateBudget(props: Prop) {
 
   return (
     <>
-      <EditSharpIcon onClick={handleClickOpen} />
+      <EditSharpIcon
+        data-testid="edit-budget-button"
+        onClick={handleClickOpen}
+      />
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add Expense</DialogTitle>
+        <DialogTitle>Update Budget</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Fill in the new details for the Budget

@@ -1,11 +1,12 @@
 import { Budget, UpdateBudget } from '../../Models/budget'
 import { Expenses } from '../../Models/expenses'
+import { Month, Year } from '../../Models/monthYear'
 import connection from './connection'
 
 export function getAllBudgets(
   userId: string | number,
-  year: string,
-  month: string,
+  year: Year,
+  month: Month,
   db = connection
 ): Promise<Budget[]> {
   const monthNumber = new Date(Date.parse(`${month} 1, ${year}`)).getMonth()
@@ -63,8 +64,8 @@ export async function updateBudget(
 
 export async function getAllExpenses(
   userId: number | string,
-  year: string,
-  month: string,
+  year: Year,
+  month: Month,
   db = connection
 ): Promise<Expenses[]> {
   const monthNumber = new Date(Date.parse(`${month} 1, ${year}`)).getMonth()
@@ -82,24 +83,17 @@ export async function getAllExpenses(
   ).toISOString()
 
   return db('expenses')
-    .leftJoin('budgets', 'expenses.budget_id', 'budgets.id')  
+    .leftJoin('budgets', 'expenses.budget_id', 'budgets.id')
     .where({ 'expenses.user_id': userId })
     .whereBetween('expenses.date', [startDateLocal, endDateLocal])
     .select('expenses.*', 'budgets.name as budgetName')
-}
-
-export async function getAllExpensesByCategory(
-  budgetId: number,
-  db = connection
-): Promise<Expenses[]> {
-  return db('expenses').where({ budget_id: budgetId }).select()
 }
 
 export async function updateExpense(
   id: number,
   newExpenseDetails: Partial<Expenses>,
   db = connection
-): Promise<Expenses> {
+) {
   await db('expenses').where({ id }).update({
     category: newExpenseDetails.category,
     amount: newExpenseDetails.amount,
@@ -130,21 +124,4 @@ export async function addExpenses(
       budget_id: newExpense.budget_id,
     })
     .returning(['id'])
-}
-
-export async function getBudgetById(id: number, db = connection) {
-  return db('budgets').where({ id }).select().first()
-}
-export async function getExpenseById(id: number, db = connection) {
-  return db('expenses').where({ id }).select().first()
-}
-export async function getTotalExpensesByBudgetId(
-  budgetId: number,
-  db = connection
-): Promise<number> {
-  const result = await db('expenses')
-    .where({ budget_id: budgetId })
-    .sum('amount as totalAmount')
-    .first()
-  return result?.totalAmount || 0
 }

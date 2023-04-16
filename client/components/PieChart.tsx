@@ -24,7 +24,6 @@ function PieChart() {
       value: totalSpending,
     }
   })
-  console.log(data)
 
   const chartData = {
     labels: data.length > 0 ? data.map((budget) => budget.label) : ['None'],
@@ -45,6 +44,16 @@ function PieChart() {
           'rgba(255, 255, 0, 0.6)',
           'rgba(255, 0, 255, 0.6)',
           'rgba(0, 255, 255, 0.6)',
+          'rgba(218, 112, 214, 0.6)',
+          'rgba(46, 139, 87, 0.6)',
+          'rgba(255, 140, 0, 0.6)',
+          'rgba(30, 144, 255, 0.6)',
+          'rgba(128, 128, 128, 0.6)',
+          'rgba(240, 230, 140, 0.6)',
+          'rgba(0, 191, 255, 0.6)',
+          'rgba(210, 105, 30, 0.6)',
+          'rgba(219, 112, 147, 0.6)',
+          'rgba(95, 158, 160, 0.6)',
         ],
         borderColor: [
           'rgba(255, 99, 132, 1)',
@@ -59,6 +68,16 @@ function PieChart() {
           'rgba(255, 255, 0, 1)',
           'rgba(255, 0, 255, 1)',
           'rgba(0, 255, 255, 1)',
+          'rgba(218, 112, 214, 1)',
+          'rgba(46, 139, 87, 1)',
+          'rgba(255, 140, 0, 1)',
+          'rgba(30, 144, 255, 1)',
+          'rgba(128, 128, 128, 1)',
+          'rgba(240, 230, 140, 1)',
+          'rgba(0, 191, 255, 1)',
+          'rgba(210, 105, 30, 1)',
+          'rgba(219, 112, 147, 1)',
+          'rgba(95, 158, 160, 1)',
         ],
         borderWidth: 1,
       },

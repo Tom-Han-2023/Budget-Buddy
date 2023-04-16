@@ -6,44 +6,29 @@ export async function getExpenses(
   year: string,
   month: string
 ): Promise<Expenses[]> {
-  try {
-    const res = await request
-      .get(`/api/v1/expenses`)
-      .set('Authorization', `Bearer ${token}`)
-      .query({ year, month })
-    return res.body
-  } catch (err) {
-    console.error(err)
-    throw err
-  }
+  const res = await request
+    .get(`/api/v1/expenses`)
+    .set('Authorization', `Bearer ${token}`)
+    .query({ year, month })
+  return res.body
 }
 
 export async function addExpenseToUserId(
   newExpense: NewExpense,
   token: string
 ): Promise<Expenses> {
-  try {
-    const res = await request
-      .post(`/api/v1/expenses/`)
-      .set('Authorization', `Bearer ${token}`)
-      .send({ ...newExpense })
-    return res.body
-  } catch (err) {
-    console.error(err)
-    throw err
-  }
+  const res = await request
+    .post(`/api/v1/expenses/`)
+    .set('Authorization', `Bearer ${token}`)
+    .send({ ...newExpense })
+  return res.body
 }
 
 export async function deleteExpense(expenseId: number, token: string) {
-  try {
-    const res = await request
-      .delete(`/api/v1/expenses/${expenseId}`)
-      .set('Authorization', `Bearer ${token}`)
-    return res.body
-  } catch (err) {
-    console.error(err)
-    throw err
-  }
+  const res = await request
+    .delete(`/api/v1/expenses/${expenseId}`)
+    .set('Authorization', `Bearer ${token}`)
+  return res.body
 }
 
 export async function updateExpenseAPI(
@@ -51,14 +36,9 @@ export async function updateExpenseAPI(
   token: string,
   expenseDetail: NewExpense
 ): Promise<Expenses> {
-  try {
-    const res = await request
-      .patch(`/api/v1/expenses/${expenseId}`)
-      .send({ ...expenseDetail })
-      .set('Authorization', `Bearer ${token}`)
-    return res.body
-  } catch (err) {
-    console.error(err)
-    throw err
-  }
+  const res = await request
+    .patch(`/api/v1/expenses/${expenseId}`)
+    .send({ ...expenseDetail })
+    .set('Authorization', `Bearer ${token}`)
+  return res.body
 }

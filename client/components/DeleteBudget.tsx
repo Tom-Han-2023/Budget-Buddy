@@ -17,6 +17,7 @@ function DeleteBudget(prop: Prop) {
   return (
     <>
       <DeleteSharpIcon
+        data-testid="delete-budget-button"
         onClick={() =>
           handleClick(prop.budgetid, accessToken.accessToken as string)
         }

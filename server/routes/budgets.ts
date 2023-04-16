@@ -1,14 +1,7 @@
 import express from 'express'
+import { Month, Year } from '../../Models/monthYear'
 import checkJwt, { JwtRequest } from '../auth0'
-import {
-  addBudgets,
-  deleteBudget,
-  getAllBudgets,
-  getAllExpensesByCategory,
-  getBudgetById,
-  getTotalExpensesByBudgetId,
-  updateBudget,
-} from '../db/db'
+import { addBudgets, deleteBudget, getAllBudgets, updateBudget } from '../db/db'
 
 const router = express.Router()
 
@@ -18,11 +11,11 @@ router.get('/', checkJwt, async (req: JwtRequest, res) => {
     const userId = req.auth?.sub
 
     const { year, month } = req.query
-    if (!userId || !year || !month) {
+    if (!userId) {
       console.error('No userId')
       return res.status(401).send('Unauthorized')
     }
-    const budgets = await getAllBudgets(userId, year as string, month as string)
+    const budgets = await getAllBudgets(userId, year as Year, month as Month)
     res.json(budgets)
   } catch (error) {
     console.log(error)
@@ -47,20 +40,6 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
     console.log(error)
     res.status(500).json({
       error: 'There was an error trying to add the budgets :(',
-    })
-  }
-})
-
-// /api/v1/budgets/:id
-router.get('/:budgetId', async (req, res) => {
-  try {
-    const budgetId = parseInt(req.params.budgetId)
-    const budget = await getBudgetById(budgetId)
-    res.json(budget)
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({
-      error: 'There was an error trying to get the expense :(',
     })
   }
 })
@@ -91,39 +70,11 @@ router.delete('/:id', checkJwt, async (req, res) => {
   try {
     const budgetId = parseInt(req.params.id)
     await deleteBudget(budgetId)
-    res.json(budgetId)
+    res.sendStatus(200)
   } catch (error) {
     console.log(error)
     res.status(500).json({
       error: 'There was an error trying to delete the post :(',
-    })
-  }
-})
-
-// /api/v1/budgets/:budgetId/expenses
-router.get('/:budgetId/expenses', async (req, res) => {
-  try {
-    const budgetId = parseInt(req.params.budgetId)
-    const expensesUnderBudget = await getAllExpensesByCategory(budgetId)
-    res.json(expensesUnderBudget)
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({
-      error: 'There was an error trying to get all expenses under budget :(',
-    })
-  }
-})
-
-// /api/v1/budgets/:budgetid/expenses/total'
-router.get('/:budgetId/expenses/total', async (req, res) => {
-  try {
-    const budgetId = parseInt(req.params.budgetId)
-    const totalExpense = await getTotalExpensesByBudgetId(budgetId)
-    res.json(totalExpense)
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({
-      error: 'There was an error trying to get the total expenses :(',
     })
   }
 })

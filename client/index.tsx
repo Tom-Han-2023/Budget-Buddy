@@ -1,5 +1,4 @@
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter as Router } from 'react-router-dom'
 import { Auth0Provider } from '@auth0/auth0-react'
 import { Provider } from 'react-redux'
 import { LocalizationProvider } from '@mui/x-date-pickers'
@@ -19,11 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
           audience: 'https://budgets/api',
         }}
       >
-        <Router>
-          <Provider store={store}>
-            <App />
-          </Provider>
-        </Router>
+        <Provider store={store}>
+          <App />
+        </Provider>
       </Auth0Provider>
     </LocalizationProvider>
   )

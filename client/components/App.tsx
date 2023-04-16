@@ -25,6 +25,8 @@ function App() {
           style={{
             display: 'flex',
             justifyContent: 'space-between',
+            marginLeft: 50,
+            marginRight: 50,
           }}
         >
           <PieChart />

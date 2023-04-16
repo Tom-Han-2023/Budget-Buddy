@@ -1,35 +1,56 @@
 # React Boilerplate
 
-## Packages Included
+# Buddy Budget
 
-- react (webpack, babel, etc.)
-- react-router-dom
-- express
-- jest
-- eslint
+Buddy Budget is a personal finance/budgeting app where you can set budgets for each month and add expenses, and track your spending for the month. You can also look at previous budgets and set future budgets.
 
-## Setup
+## Technologies Used
 
-- [ ] Clone this repo, navigate to it, install packages, and start the server with `npm run dev`
-  <details style="padding-left: 2em">
-    <summary>Tip</summary>
+- React
+- Chart.js
+- Material UI
+- Redux
+- TypeScript
+- Auth0
+- Node.js
+- Express
+- Knex
+- PostgreSQL/SQLite3
+
+## System Requirements
+
+You may clone the repo, navigate to it, install packages, and start the server with `npm run dev`
 
     ```sh
     npm install
     npm run dev
     ```
-  </details>
 
+The user needs to have a web browser installed on their computer and a stable internet connection to access the application.
 
+## Usage
 
-## User story
--As a user, I want to be able to create a budget for each month so that I can better manage my finances.
--As a user, I want to be able to track my income and expenses so that I can see where my money is going.
---As a user, I want to be able to set financial goals (e.g. saving for a vacation, paying off debt) so that I can work towards them.
--As a user, I want to be able to see charts and graphs that show me my financial progress over time so that I can stay motivated.
--As a user, I want to be able to receive alerts when I am nearing or exceeding my budget limits so that I can adjust my spending habits accordingly.
--As a user, I want to be able to categorize my expenses (e.g. groceries, entertainment, transportation) so that I can see which areas I am spending the most money on.
--As a user, I want to be able to export my financial data to a CSV file so that I can analyze it further in a spreadsheet program.
+Users can access Buddy Budget through a web browser by visiting the deployed website. There is no need to install any software locally.
 
-- wireframe https://demo.buxfer.com/dashboard
-- https://codinginpublic.dev/projects/react-router-budget-app/
+## Key Features
+
+- Adding and categorizing expenses
+- Setting budgets for different categories
+- Viewing spending according to categories through a pie chart
+
+## Future Development
+
+- Adding incomes to track the total savings made for that month
+- Net worth calculation
+
+## Contributing
+
+Contributions are welcome! Feel free to give ideas about the project or do a pull request.
+
+## Acknowledgements
+
+None.
+
+![Screenshot of the Buddy Budget page](buddy-budget-screenshot.png)
+
+Thank you for using Buddy Budget!

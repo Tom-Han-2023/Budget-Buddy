@@ -46,10 +46,7 @@ Users can access Buddy Budget through a web browser by visiting the deployed web
 
 Contributions are welcome! Feel free to give ideas about the project or do a pull request.
 
-## Acknowledgements
+![app-page](https://user-images.githubusercontent.com/121856196/232280772-6f46530c-f0ac-46b0-a1cc-c8b61400038d.png)
 
-None.
-
-![Screenshot of the Buddy Budget page](buddy-budget-screenshot.png)
 
 Thank you for using Buddy Budget!

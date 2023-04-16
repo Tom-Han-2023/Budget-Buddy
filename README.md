@@ -1,4 +1,3 @@
-# React Boilerplate
 
 # Buddy Budget
 

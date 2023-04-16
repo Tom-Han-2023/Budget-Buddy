@@ -7,13 +7,13 @@ import {
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
-import { initialiseStore } from '../../../store'
+import { initialiseStore } from '../../store'
 import { useAuth0 } from '@auth0/auth0-react'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import nock from 'nock'
-import DateSelectForm from '../../DateSelectForm'
-import Budget from '../../Budget'
+import DateSelectForm from '../DateSelectForm'
+import Budget from '../Budget'
 
 jest.mock('@auth0/auth0-react')
 
@@ -30,7 +30,6 @@ describe('<Budget />', () => {
     const mockAuth = {
       getAccessTokenSilently: jest.fn(async () => 'auth0Token'),
       isAuthenticated: true,
-      logout: jest.fn(async () => null),
     }
     jest.mocked(useAuth0 as jest.Mock).mockReturnValue(mockAuth)
     render(

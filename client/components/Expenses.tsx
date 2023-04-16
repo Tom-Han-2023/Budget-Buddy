@@ -159,7 +159,7 @@ const Expenses = () => {
   if (expenses.isLoading) {
     return (
       <div>
-        <h1>page is loading</h1>
+        <h1>expense is loading</h1>
       </div>
     )
   }

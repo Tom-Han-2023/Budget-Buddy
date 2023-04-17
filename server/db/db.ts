@@ -115,6 +115,7 @@ export async function addExpenses(
   newExpense: Partial<Expenses>,
   db = connection
 ) {
+  
   return db('expenses')
     .insert({
       user_id: userId,

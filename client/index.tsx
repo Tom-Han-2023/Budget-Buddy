@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
   createRoot(document.getElementById('app') as HTMLElement).render(
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Auth0Provider
-        domain="tohora-2023-tom.au.auth0.com"
-        clientId="UeVfLKLFdM4sD3X4fVL5dY5cjE3yrr6Z" //production: vVLt7WpBJPn0MBh2SDiNQky0wvcleb9t // development:UeVfLKLFdM4sD3X4fVL5dY5cjE3yrr6Z
+        domain="tohora-2023-tomh.au.auth0.com"
+        clientId="vVLt7WpBJPn0MBh2SDiNQky0wvcleb9t" //development: vVLt7WpBJPn0MBh2SDiNQky0wvcleb9t // production:UeVfLKLFdM4sD3X4fVL5dY5cjE3yrr6Z
         authorizationParams={{
           redirect_uri: window.location.origin,
           audience: 'https://budgets/api',

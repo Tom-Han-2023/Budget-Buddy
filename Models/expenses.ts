@@ -3,7 +3,7 @@ export interface Expenses {
   user_id: number | string
   budget_id: number | null
   category: string
-  amount: number
+  amount: number | string
   date: string
   budgetName: string
 }

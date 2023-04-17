@@ -16,6 +16,9 @@ router.get('/', checkJwt, async (req: JwtRequest, res) => {
       return res.status(401).send('Unauthorized')
     }
     const budgets = await getAllBudgets(userId, year as Year, month as Month)
+    budgets.forEach((budget) => {
+      budget.amount = parseInt(budget.amount as string)
+    })
     res.json(budgets)
   } catch (error) {
     console.log(error)

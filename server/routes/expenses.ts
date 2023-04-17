@@ -25,8 +25,12 @@ router.get('/', checkJwt, async (req: JwtRequest, res) => {
     const expenses = await getAllExpenses(userId, year as Year, month as Month)
     const AllExpenses = expenses.map((expense) => {
       return expense.budgetName
-        ? expense
-        : { ...expense, budgetName: 'Uncategorized' }
+        ? { ...expense, amount: parseInt(expense.amount as string) }
+        : {
+            ...expense,
+            amount: parseInt(expense.amount as string),
+            budgetName: 'Uncategorized',
+          }
     })
     res.json(AllExpenses)
   } catch (error) {

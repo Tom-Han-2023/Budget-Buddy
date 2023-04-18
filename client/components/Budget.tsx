@@ -51,7 +51,7 @@ function Budget() {
       return expense.budget_id === budgetId
     })
     const totalSpent = expensesByBudgetId.reduce((sum, curr) => {
-      return sum + curr.amount
+      return sum + (curr.amount as number)
     }, 0)
     return totalSpent
   }

@@ -27,6 +27,12 @@ export function getAllBudgets(
     .where('user_id', userId)
     .whereBetween('date', [startDateLocal, endDateLocal])
     .select('id', 'user_id', 'name', 'amount')
+    .then((budgets) => {
+      budgets.forEach((budget) => {
+        budget.amount = parseFloat(budget.amount as string)
+      })
+      return budgets
+    })
 }
 
 export async function addBudgets(
@@ -115,7 +121,6 @@ export async function addExpenses(
   newExpense: Partial<Expenses>,
   db = connection
 ) {
-  
   return db('expenses')
     .insert({
       user_id: userId,

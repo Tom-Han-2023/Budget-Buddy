@@ -232,7 +232,7 @@ describe('DELETE /api/v1/budgets/:id', () => {
     expect(response.statusCode).toBe(200)
   })
   it('should return status code 500 if there is an error deleting the budget from database', async () => {
-    // jest.spyOn(console, 'log').mockImplementation(() => {})
+    jest.spyOn(console, 'log').mockImplementation(() => {})
     jest
       .mocked(checkJwt)
       .mockImplementation(async (req: JwtRequest, res, next) => {

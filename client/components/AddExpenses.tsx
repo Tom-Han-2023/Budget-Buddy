@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { useAppDispatch, useAppSelector } from '../hooks'
 import { DatePicker } from '@mui/x-date-pickers'
@@ -27,28 +27,20 @@ export default function AddExpenses() {
     category: '',
     amount: 0,
     budget_id: null as number | null,
-    date: new Date(`${year}-${month}-01`),
+    date: new Date(new Date(`${year}-${month}-01`).setHours(1)),
     budgetName: '',
   })
-
-  useEffect(() => {
-    setExpense((prevExpense) => {
-      const monthNumber = new Date(Date.parse(`${month} 1, ${year}`)).getMonth()
-      const startDate = new Date(parseInt(year), monthNumber, 1)
-      const timezoneOffset = startDate.getTimezoneOffset() * 60 * 1000 // convert minutes to milliseconds
-      const startDateLocal = new Date(startDate.getTime() - timezoneOffset)
-
-      return { ...prevExpense, date: startDateLocal }
-    })
-  }, [year, month])
 
   function handleSubmit() {
     const budget = budgets.data.find(
       (budget) => budget.id === expense.budget_id
     )
+    const timezoneOffset =
+      expense.date.getTimezoneOffset() * 60 * 1000 - 60 * 60 * 1000 // convert minutes to milliseconds // add one hour so that its 1 am rather than 12 pm
+    const expenseDateLocal = new Date(expense.date.getTime() - timezoneOffset)
     const updatedExpense = {
       ...expense,
-      date: expense.date.toISOString(),
+      date: expenseDateLocal.toISOString(),
       budgetName: budget && budget.name ? budget.name : 'Uncategorized',
     }
 
@@ -57,7 +49,7 @@ export default function AddExpenses() {
       category: '',
       amount: 0,
       budget_id: null,
-      date: new Date(`${year}-${month}-01`),
+      date: new Date(new Date(`${year}-${month}-01`).setHours(1)),
       budgetName: '',
     })
     handleClose()

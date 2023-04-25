@@ -23,7 +23,7 @@ Buddy Budget is a personal finance/budgeting app where you can set budgets for e
 
 You may clone the repo, navigate to it, install packages, and start the server with `npm run dev`
 
-    ```sh
+    ```
     npm install
     npm run knex migrate:latest
     npm run knex seed:run

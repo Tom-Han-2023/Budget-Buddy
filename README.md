@@ -25,6 +25,8 @@ You may clone the repo, navigate to it, install packages, and start the server w
 
     ```sh
     npm install
+    npm run knex migrate:latest
+    npm run knex seed:run
     npm run dev
     ```
 

@@ -5,19 +5,19 @@
   "repository": "https://github.com/dev-academy-challenges/react-boilerplate.git",
   "main": "server/index.js",
   "scripts": {
-    "build": "npm run webpack -- --mode production",
-    "start": "ts-node server/index.ts",
+    "start": "run-p webpack server",
     "dev": "run-p client:watch server:watch",
-    "webpack": "webpack --config client/webpack.config.js",
-    "knex": "knex --knexfile server/db/knexfile.js",
     "server": "ts-node server/index.ts",
     "client:watch": "npm run webpack -- --watch",
     "server:watch": "nodemon server/index.ts",
     "test": "jest",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --noStackTrace --watchAll",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
-    "format": "prettier -w '**/*.{js,jsx,ts,tsx}'"
+    "format": "prettier -w '*/.{js,jsx,ts,tsx}'",
+    "build": "run-p build:client build:server",
+    "build:client": "npm run webpack -- --mode production",
+    "build:server": "npm run knex -- migrate:latest",
+    "knex": "knex --knexfile ./server/db/.knexfile.js",
+    "webpack": "webpack --config client/webpack.config.js"
   },
   "babel": {
     "presets": [

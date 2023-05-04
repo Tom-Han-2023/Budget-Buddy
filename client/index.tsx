@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
   createRoot(document.getElementById('app') as HTMLElement).render(
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Auth0Provider
-        domain="tohora-2023-tomh.au.auth0.com"
-        clientId="vVLt7WpBJPn0MBh2SDiNQky0wvcleb9t" //development: vVLt7WpBJPn0MBh2SDiNQky0wvcleb9t // production:UeVfLKLFdM4sD3X4fVL5dY5cjE3yrr6Z
+        domain="railway-budget-buddy.au.auth0.com"
+        clientId="y6jKbXEJjWFqzGgVczBSveWyuDISbQkR"
         authorizationParams={{
           redirect_uri: window.location.origin,
           audience: 'https://budgets/api',

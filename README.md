@@ -34,7 +34,7 @@ The user needs to have a web browser installed on their computer and a stable in
 
 ## Usage
 
-Users can access Buddy Budget through a web browser by visiting the deployed website (https://budget-buddy.devacademy.nz/). There is no need to install any software locally.
+Users can access Buddy Budget through a web browser by visiting the deployed website (https://budget-buddy.up.railway.app/). There is no need to install any software locally.
 
 ## Key Features
 
